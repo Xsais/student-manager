@@ -5,5 +5,6 @@
 !.gitignore
 !*.sln
 
-!*/
+!student-manager/
+!layouts/
 !*/*
