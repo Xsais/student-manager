@@ -1,10 +1,7 @@
 # Ignore everything
-*
+.*
+*/bin
+*/obj
 
 # But not these files/folders...
 !.gitignore
-!*.sln
-
-!student-manager/
-!layouts/
-!*/*
