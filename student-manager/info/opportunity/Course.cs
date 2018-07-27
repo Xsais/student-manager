@@ -7,7 +7,7 @@ using student_manager.info.entity;
 
 namespace student_manager.info.opportunity
 {
-    class Course : Entity
+    public class Course : Entity
     {
         public Course(string id) : base(id)
         {
