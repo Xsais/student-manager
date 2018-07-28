@@ -54,8 +54,43 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="info\Entity.cs" />
+    <Compile Include="info\Gender.cs" />
+    <Compile Include="info\member\Person.cs" />
+    <Compile Include="info\member\Professor.cs" />
+    <Compile Include="info\member\Student.cs" />
+    <Compile Include="info\Name.cs" />
+    <Compile Include="info\opportunity\Course.cs" />
+    <Compile Include="info\opportunity\Program.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ui\display\ClickableDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\display\ClickableDisplay.Designer.cs">
+      <DependentUpon>ClickableDisplay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\display\EntityDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\display\EntityDisplay.Designer.cs">
+      <DependentUpon>EntityDisplay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\display\EntityDisplayGroup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\display\EntityDisplayGroup.Designer.cs">
+      <DependentUpon>EntityDisplayGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\functionality\SearchBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\functionality\SearchBox.Designer.cs">
+      <DependentUpon>SearchBox.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -64,7 +99,20 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ui\display\ClickableDisplay.resx">
+      <DependentUpon>ClickableDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\display\EntityDisplay.resx">
+      <DependentUpon>EntityDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\display\EntityDisplayGroup.resx">
+      <DependentUpon>EntityDisplayGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\functionality\SearchBox.resx">
+      <DependentUpon>SearchBox.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -77,6 +125,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\link.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
