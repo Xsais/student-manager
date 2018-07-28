@@ -15,5 +15,16 @@ namespace student_manager.info.entity
 
             ID = id;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is Entity))
+            {
+
+                return false;
+            }
+
+            return ((Entity)obj).ID == ID;
+        }
     }
 }
