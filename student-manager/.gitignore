@@ -1,7 +1,0 @@
-# Ignore these folders...
-obj/
-bin/
-
-# Except these folders...
-!*/
-!*/*
