@@ -15,13 +15,69 @@ namespace student_manager.ui.display
 {
     public partial class EntityDisplayGroup : UserControl
     {
-        private readonly HashSet<Entity> _avilableEntitys = new HashSet<Entity>();
+        private readonly List<Entity> _avilableEntitys = new List<Entity>();
 
         private readonly Dictionary<Entity, EntityDisplay> _alivalibleEntries = new Dictionary<Entity, EntityDisplay>();
+
+        public EventHandler MaxChanged;
+
+        public int MaxPages
+        {
+            get => _maxPages;
+            private set
+            {
+                if (value == _maxPages)
+                {
+
+                    return;
+                }
+                _maxPages = value;
+                MaxChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         private int _startY;
         private int _spacing = 5;
         private int _displayed;
+        private int _page = 1;
+
+        public int Page
+        {
+            get => _page;
+            set
+            {
+
+                if (_avilableEntitys.Count == 0 || value <= 0 || value == _page)
+                {
+
+                    return;
+                }
+
+                _startY = 0;
+                _displayed = 0;
+
+                var startIndex = (_page - 1) * PerPage;
+                var endIndex = Math.Min(startIndex + PerPage, _avilableEntitys.Count);
+
+                for (; startIndex < endIndex; ++startIndex)
+                {
+                    
+                    Controls.Remove(_alivalibleEntries[_avilableEntitys[startIndex]]);
+                    _alivalibleEntries.Remove(_avilableEntitys[startIndex]);
+                }
+                
+                startIndex = (value - 1) * PerPage;
+                endIndex = Math.Min(startIndex + PerPage, _avilableEntitys.Count);
+
+                for (; startIndex < endIndex; ++startIndex)
+                {
+
+                    DisplayEntry(_avilableEntitys[startIndex]);
+                }
+                _page = value;
+                PageChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         public Entity Selected
         {
@@ -62,6 +118,9 @@ namespace student_manager.ui.display
 
         public int PerPage { get; set; } = 5;
 
+        public EventHandler PageChanged;
+        private int _maxPages = 1;
+
         public int Spacing
         {
             get => _spacing;
@@ -97,16 +156,22 @@ namespace student_manager.ui.display
             _avilableEntitys.Add(entity);
 
             DisplayEntry(entity);
+            
+            MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
         }
 
         public void RemoveEntry(Entity entity)
         {
             var display = _alivalibleEntries[entity];
 
+            _avilableEntitys.Remove(entity);
+
             _alivalibleEntries.Remove(entity);
             Controls.Remove(display);
 
             _startY -= display.Height + Spacing;
+            
+            MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
         }
 
         private void DisplayEntry(Entity entity)
