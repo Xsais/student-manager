@@ -22,7 +22,41 @@ namespace student_manager.ui.display
         private int _startY;
         private int _spacing = 5;
         private int _displayed;
-        public Entity Selected = null;
+
+        public Entity Selected
+        {
+            get => _selected;
+            set
+            {
+                if (value == _selected)
+                {
+                    return;
+                }
+
+                if (value == null)
+                {
+                    if (_selected != null)
+                    {
+                        _alivalibleEntries[_selected].BackColor = BackColor;
+                    }
+
+                    return;
+                }
+
+                _alivalibleEntries[value].BackColor = SelectionColor;
+
+                if (Selected != null)
+                {
+                    _alivalibleEntries[_selected].BackColor = BackColor;
+                }
+
+                _selected = value;
+                SelectionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public EventHandler SelectionChanged;
+        private Entity _selected = null;
 
         public Color SelectionColor { get; set; } = SystemColors.Highlight;
 
@@ -82,22 +116,14 @@ namespace student_manager.ui.display
                 return;
             }
 
-            var visualDisplay = new EntityDisplay();
+            var visualDisplay = new EntityDisplay
+            {
+                Cursor = Cursors.Hand
+            };
 
-            visualDisplay.Cursor = Cursors.Hand;
 
             visualDisplay.Click += (sender, args) =>
-            {
-                ((EntityDisplay)sender).BackColor = SelectionColor;
-
-                if (Selected != null)
-                {
-
-                    _alivalibleEntries[Selected].BackColor = BackColor;
-                }
-
                 Selected = _alivalibleEntries.First(entry => entry.Value.Equals(sender)).Key;
-            };
 
             if (entity is Student student)
             {
