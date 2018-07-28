@@ -82,6 +82,12 @@
     <Compile Include="ui\display\EntityDisplayGroup.Designer.cs">
       <DependentUpon>EntityDisplayGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="ui\display\Indicator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\display\Indicator.Designer.cs">
+      <DependentUpon>Indicator.cs</DependentUpon>
+    </Compile>
     <Compile Include="ui\functionality\SearchBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -109,6 +115,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ui\display\EntityDisplayGroup.resx">
       <DependentUpon>EntityDisplayGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\display\Indicator.resx">
+      <DependentUpon>Indicator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ui\functionality\SearchBox.resx">
       <DependentUpon>SearchBox.cs</DependentUpon>
@@ -140,6 +149,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ui\display\manipulate\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
