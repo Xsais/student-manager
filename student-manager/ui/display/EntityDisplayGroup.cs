@@ -26,6 +26,7 @@ namespace student_manager.ui.display
             get => _maxPages;
             private set
             {
+                value = Math.Max(value, 1);
                 if (value == _maxPages)
                 {
 
@@ -162,16 +163,21 @@ namespace student_manager.ui.display
 
         public void RemoveEntry(Entity entity)
         {
-            var display = _alivalibleEntries[entity];
-
             _avilableEntitys.Remove(entity);
 
-            _alivalibleEntries.Remove(entity);
-            Controls.Remove(display);
+            if (_alivalibleEntries.Count > 0) {
 
-            _startY -= display.Height + Spacing;
-            
-            MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
+                var display = _alivalibleEntries[entity];
+
+                _alivalibleEntries.Remove(entity);
+                Controls.Remove(display);
+
+                _startY -= display.Height + Spacing;
+
+                MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
+
+                --_displayed;
+            }
         }
 
         private void DisplayEntry(Entity entity)
@@ -227,6 +233,24 @@ namespace student_manager.ui.display
             Controls.Add(visualDisplay);
 
             ++_displayed;
+        }
+
+        public void RemoveAll(IEnumerable<Entity> entitys)
+        {
+            foreach (var entity in entitys)
+            {
+                
+                RemoveEntry(entity);
+            }
+        }
+
+        public void AddAll(IEnumerable<Entity> entitys)
+        {
+            foreach (var entity in entitys)
+            {
+                
+                AddEntity(entity);
+            }
         }
     }
 }
