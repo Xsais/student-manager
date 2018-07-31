@@ -63,10 +63,11 @@
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.picSearch);
             this.Controls.Add(this.txtSearchBox);
-            this.MaximumSize = new System.Drawing.Size(261, 27);
-            this.MinimumSize = new System.Drawing.Size(261, 27);
+            this.Margin = new System.Windows.Forms.Padding(0);
+            this.MaximumSize = new System.Drawing.Size(260, 27);
+            this.MinimumSize = new System.Drawing.Size(260, 27);
             this.Name = "SearchBox";
-            this.Size = new System.Drawing.Size(261, 25);
+            this.Size = new System.Drawing.Size(258, 25);
             ((System.ComponentModel.ISupportInitialize)(this.picSearch)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
