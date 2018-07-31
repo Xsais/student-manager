@@ -44,9 +44,6 @@ namespace student_manager.ui.display
                 }
 
                 _spacing = value;
-
-                Size = new Size(Controls.Count * _indicatorSize.Width + (Controls.Count - 1) * Spacing,
-                    _indicatorSize.Height);
             }
         }
 
@@ -171,8 +168,6 @@ namespace student_manager.ui.display
 
                     _startX -= (_indicatorSize.Width + Spacing) * startIndex;
 
-                    startIndex -= 1;
-
                     for (; startIndex < Controls.Count; ++startIndex)
                     {
                         Controls.RemoveAt(startIndex);
@@ -180,6 +175,7 @@ namespace student_manager.ui.display
                 }
                 else
                 {
+
                     var endIndex = value - _count;
 
                     for (var startIndex = 0; startIndex < endIndex; ++startIndex)
@@ -218,7 +214,6 @@ namespace student_manager.ui.display
 
                         indicator.Click += (sender, e) => { Selected = Controls.GetChildIndex((Label) sender) + 1; };
 
-
                         Controls.Add(indicator);
 
                         _startX += _indicatorSize.Width + Spacing;
@@ -231,7 +226,7 @@ namespace student_manager.ui.display
 
                 Left += (oldWidth - newWidth) / 2;
 
-                Size = new Size(newWidth, Size.Height);
+                Size = new Size(newWidth, _indicatorSize.Height);
 
                 _count = value;
             }
@@ -240,8 +235,6 @@ namespace student_manager.ui.display
         public Indicator()
         {
             InitializeComponent();
-
-            Size = Size.Empty;
         }
     }
 }
