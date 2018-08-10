@@ -34,11 +34,9 @@
             this.picMinus = new System.Windows.Forms.PictureBox();
             this.picAdd = new System.Windows.Forms.PictureBox();
             this.pnlEnties = new System.Windows.Forms.Panel();
-            this.cdProfessors = new student_manager.ui.display.ClickableDisplay();
-            this.cdStudents = new student_manager.ui.display.ClickableDisplay();
-            this.cdCourses = new student_manager.ui.display.ClickableDisplay();
-            this.cdPrograms = new student_manager.ui.display.ClickableDisplay();
-            this.cdHome = new student_manager.ui.display.ClickableDisplay();
+            this.pnlHome = new System.Windows.Forms.Panel();
+            this.sbEntitys = new student_manager.ui.functionality.SearchBox();
+            this.cdPageCount = new student_manager.ui.display.ClickableDisplay();
             this.edgProfessors = new student_manager.ui.display.EntityDisplayGroup();
             this.edgCourses = new student_manager.ui.display.EntityDisplayGroup();
             this.edgPrograms = new student_manager.ui.display.EntityDisplayGroup();
@@ -46,12 +44,18 @@
             this.iPage = new student_manager.ui.display.Indicator();
             this.cdPage = new student_manager.ui.display.ClickableDisplay();
             this.edgStudents = new student_manager.ui.display.EntityDisplayGroup();
+            this.cdProfessors = new student_manager.ui.display.ClickableDisplay();
+            this.cdStudents = new student_manager.ui.display.ClickableDisplay();
+            this.cdCourses = new student_manager.ui.display.ClickableDisplay();
+            this.cdPrograms = new student_manager.ui.display.ClickableDisplay();
+            this.cdHome = new student_manager.ui.display.ClickableDisplay();
             this.lblDivider = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMinus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picAdd)).BeginInit();
             this.pnlEnties.SuspendLayout();
+            this.pnlHome.SuspendLayout();
             this.SuspendLayout();
             // 
             // picLink
@@ -112,6 +116,7 @@
             // pnlEnties
             // 
             this.pnlEnties.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pnlEnties.Controls.Add(this.pnlHome);
             this.pnlEnties.Controls.Add(this.edgProfessors);
             this.pnlEnties.Controls.Add(this.edgCourses);
             this.pnlEnties.Controls.Add(this.edgPrograms);
@@ -131,84 +136,46 @@
             this.pnlEnties.TabIndex = 0;
             this.pnlEnties.Text = "grpStudents";
             // 
-            // cdProfessors
+            // pnlHome
             // 
-            this.cdProfessors.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.cdProfessors.HighlightColor = System.Drawing.SystemColors.Highlight;
-            this.cdProfessors.IsSelected = false;
-            this.cdProfessors.Location = new System.Drawing.Point(10, 274);
-            this.cdProfessors.Name = "cdProfessors";
-            this.cdProfessors.SelectionColor = System.Drawing.SystemColors.Highlight;
-            this.cdProfessors.Size = new System.Drawing.Size(94, 26);
-            this.cdProfessors.TabIndex = 5;
-            this.cdProfessors.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.cdProfessors.Title = "Professors";
-            this.cdProfessors.UnderlineColor = System.Drawing.Color.Black;
-            this.cdProfessors.UnderlineHight = 3;
+            this.pnlHome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pnlHome.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlHome.Location = new System.Drawing.Point(0, 0);
+            this.pnlHome.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlHome.Name = "pnlHome";
+            this.pnlHome.Size = new System.Drawing.Size(598, 469);
+            this.pnlHome.TabIndex = 9;
+            this.pnlHome.Text = "grpStudents";
+            this.pnlHome.Visible = false;
             // 
-            // cdStudents
+            // sbEntitys
             // 
-            this.cdStudents.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.cdStudents.HighlightColor = System.Drawing.SystemColors.Highlight;
-            this.cdStudents.IsSelected = false;
-            this.cdStudents.Location = new System.Drawing.Point(10, 215);
-            this.cdStudents.Margin = new System.Windows.Forms.Padding(0);
-            this.cdStudents.Name = "cdStudents";
-            this.cdStudents.SelectionColor = System.Drawing.SystemColors.Highlight;
-            this.cdStudents.Size = new System.Drawing.Size(94, 26);
-            this.cdStudents.TabIndex = 4;
-            this.cdStudents.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.cdStudents.Title = "Students";
-            this.cdStudents.UnderlineColor = System.Drawing.Color.Black;
-            this.cdStudents.UnderlineHight = 3;
+            this.sbEntitys.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.sbEntitys.BackColor = System.Drawing.SystemColors.Window;
+            this.sbEntitys.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.sbEntitys.Location = new System.Drawing.Point(296, 28);
+            this.sbEntitys.Margin = new System.Windows.Forms.Padding(0);
+            this.sbEntitys.MaximumSize = new System.Drawing.Size(260, 27);
+            this.sbEntitys.MinimumSize = new System.Drawing.Size(260, 27);
+            this.sbEntitys.Name = "sbEntitys";
+            this.sbEntitys.Size = new System.Drawing.Size(260, 27);
+            this.sbEntitys.TabIndex = 8;
             // 
-            // cdCourses
+            // cdPageCount
             // 
-            this.cdCourses.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.cdCourses.HighlightColor = System.Drawing.SystemColors.Highlight;
-            this.cdCourses.IsSelected = false;
-            this.cdCourses.Location = new System.Drawing.Point(10, 152);
-            this.cdCourses.Margin = new System.Windows.Forms.Padding(0);
-            this.cdCourses.Name = "cdCourses";
-            this.cdCourses.SelectionColor = System.Drawing.SystemColors.Highlight;
-            this.cdCourses.Size = new System.Drawing.Size(94, 26);
-            this.cdCourses.TabIndex = 3;
-            this.cdCourses.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.cdCourses.Title = "Courses";
-            this.cdCourses.UnderlineColor = System.Drawing.Color.Black;
-            this.cdCourses.UnderlineHight = 3;
-            // 
-            // cdPrograms
-            // 
-            this.cdPrograms.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.cdPrograms.HighlightColor = System.Drawing.SystemColors.Highlight;
-            this.cdPrograms.IsSelected = false;
-            this.cdPrograms.Location = new System.Drawing.Point(10, 91);
-            this.cdPrograms.Margin = new System.Windows.Forms.Padding(0);
-            this.cdPrograms.Name = "cdPrograms";
-            this.cdPrograms.SelectionColor = System.Drawing.SystemColors.Highlight;
-            this.cdPrograms.Size = new System.Drawing.Size(94, 26);
-            this.cdPrograms.TabIndex = 2;
-            this.cdPrograms.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.cdPrograms.Title = "Programs";
-            this.cdPrograms.UnderlineColor = System.Drawing.Color.Black;
-            this.cdPrograms.UnderlineHight = 3;
-            // 
-            // cdHome
-            // 
-            this.cdHome.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.cdHome.HighlightColor = System.Drawing.SystemColors.Highlight;
-            this.cdHome.IsSelected = false;
-            this.cdHome.Location = new System.Drawing.Point(10, 32);
-            this.cdHome.Margin = new System.Windows.Forms.Padding(0);
-            this.cdHome.Name = "cdHome";
-            this.cdHome.SelectionColor = System.Drawing.SystemColors.Highlight;
-            this.cdHome.Size = new System.Drawing.Size(94, 26);
-            this.cdHome.TabIndex = 1;
-            this.cdHome.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.cdHome.Title = "Home";
-            this.cdHome.UnderlineColor = System.Drawing.Color.Black;
-            this.cdHome.UnderlineHight = 3;
+            this.cdPageCount.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.cdPageCount.HighlightColor = System.Drawing.Color.Black;
+            this.cdPageCount.IsSelected = false;
+            this.cdPageCount.Location = new System.Drawing.Point(280, 417);
+            this.cdPageCount.Margin = new System.Windows.Forms.Padding(0);
+            this.cdPageCount.Name = "cdPageCount";
+            this.cdPageCount.SelectionColor = System.Drawing.Color.Black;
+            this.cdPageCount.Size = new System.Drawing.Size(26, 22);
+            this.cdPageCount.TabIndex = 7;
+            this.cdPageCount.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.cdPageCount.Title = "1";
+            this.cdPageCount.UnderlineColor = System.Drawing.Color.Black;
+            this.cdPageCount.UnderlineHight = 2;
             // 
             // edgProfessors
             // 
@@ -324,6 +291,85 @@
             this.edgStudents.TabIndex = 0;
             this.edgStudents.Visible = false;
             // 
+            // cdProfessors
+            // 
+            this.cdProfessors.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.cdProfessors.HighlightColor = System.Drawing.SystemColors.Highlight;
+            this.cdProfessors.IsSelected = false;
+            this.cdProfessors.Location = new System.Drawing.Point(10, 274);
+            this.cdProfessors.Name = "cdProfessors";
+            this.cdProfessors.SelectionColor = System.Drawing.SystemColors.Highlight;
+            this.cdProfessors.Size = new System.Drawing.Size(94, 26);
+            this.cdProfessors.TabIndex = 5;
+            this.cdProfessors.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.cdProfessors.Title = "Professors";
+            this.cdProfessors.UnderlineColor = System.Drawing.Color.Black;
+            this.cdProfessors.UnderlineHight = 3;
+            // 
+            // cdStudents
+            // 
+            this.cdStudents.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.cdStudents.HighlightColor = System.Drawing.SystemColors.Highlight;
+            this.cdStudents.IsSelected = false;
+            this.cdStudents.Location = new System.Drawing.Point(10, 215);
+            this.cdStudents.Margin = new System.Windows.Forms.Padding(0);
+            this.cdStudents.Name = "cdStudents";
+            this.cdStudents.SelectionColor = System.Drawing.SystemColors.Highlight;
+            this.cdStudents.Size = new System.Drawing.Size(94, 26);
+            this.cdStudents.TabIndex = 4;
+            this.cdStudents.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.cdStudents.Title = "Students";
+            this.cdStudents.UnderlineColor = System.Drawing.Color.Black;
+            this.cdStudents.UnderlineHight = 3;
+            // 
+            // cdCourses
+            // 
+            this.cdCourses.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.cdCourses.HighlightColor = System.Drawing.SystemColors.Highlight;
+            this.cdCourses.IsSelected = false;
+            this.cdCourses.Location = new System.Drawing.Point(10, 152);
+            this.cdCourses.Margin = new System.Windows.Forms.Padding(0);
+            this.cdCourses.Name = "cdCourses";
+            this.cdCourses.SelectionColor = System.Drawing.SystemColors.Highlight;
+            this.cdCourses.Size = new System.Drawing.Size(94, 26);
+            this.cdCourses.TabIndex = 3;
+            this.cdCourses.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.cdCourses.Title = "Courses";
+            this.cdCourses.UnderlineColor = System.Drawing.Color.Black;
+            this.cdCourses.UnderlineHight = 3;
+            // 
+            // cdPrograms
+            // 
+            this.cdPrograms.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.cdPrograms.HighlightColor = System.Drawing.SystemColors.Highlight;
+            this.cdPrograms.IsSelected = false;
+            this.cdPrograms.Location = new System.Drawing.Point(10, 91);
+            this.cdPrograms.Margin = new System.Windows.Forms.Padding(0);
+            this.cdPrograms.Name = "cdPrograms";
+            this.cdPrograms.SelectionColor = System.Drawing.SystemColors.Highlight;
+            this.cdPrograms.Size = new System.Drawing.Size(94, 26);
+            this.cdPrograms.TabIndex = 2;
+            this.cdPrograms.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.cdPrograms.Title = "Programs";
+            this.cdPrograms.UnderlineColor = System.Drawing.Color.Black;
+            this.cdPrograms.UnderlineHight = 3;
+            // 
+            // cdHome
+            // 
+            this.cdHome.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.cdHome.HighlightColor = System.Drawing.SystemColors.Highlight;
+            this.cdHome.IsSelected = false;
+            this.cdHome.Location = new System.Drawing.Point(10, 32);
+            this.cdHome.Margin = new System.Windows.Forms.Padding(0);
+            this.cdHome.Name = "cdHome";
+            this.cdHome.SelectionColor = System.Drawing.SystemColors.Highlight;
+            this.cdHome.Size = new System.Drawing.Size(94, 26);
+            this.cdHome.TabIndex = 1;
+            this.cdHome.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.cdHome.Title = "Home";
+            this.cdHome.UnderlineColor = System.Drawing.Color.Black;
+            this.cdHome.UnderlineHight = 3;
+            // 
             // lblDivider
             // 
             this.lblDivider.BackColor = System.Drawing.Color.Black;
@@ -352,6 +398,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.picMinus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picAdd)).EndInit();
             this.pnlEnties.ResumeLayout(false);
+            this.pnlHome.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -365,16 +412,19 @@
         private System.Windows.Forms.PictureBox picEdit;
         private System.Windows.Forms.PictureBox picMinus;
         private System.Windows.Forms.PictureBox picAdd;
+        private System.Windows.Forms.PictureBox picLink;
         private ui.display.EntityDisplayGroup edgStudents;
         private ui.display.EntityDisplayGroup edgProfessors;
         private ui.display.EntityDisplayGroup edgCourses;
         private ui.display.EntityDisplayGroup edgPrograms;
-        private System.Windows.Forms.PictureBox picLink;
         private ui.display.ClickableDisplay cdPage;
         private ui.functionality.SearchBox sbMain;
         private ui.display.Indicator iPage;
         private System.Windows.Forms.Panel pnlEnties;
         private System.Windows.Forms.Label lblDivider;
+        private System.Windows.Forms.Panel pnlHome;
+        private ui.functionality.SearchBox sbEntitys;
+        private ui.display.ClickableDisplay cdPageCount;
     }
 }
 

@@ -90,17 +90,10 @@ namespace student_manager.ui.display
                     return;
                 }
 
-                if (value == null)
+                if (value != null)
                 {
-                    if (_selected != null)
-                    {
-                        _alivalibleEntries[_selected].BackColor = BackColor;
-                    }
-
-                    return;
+                    _alivalibleEntries[value].BackColor = SelectionColor;
                 }
-
-                _alivalibleEntries[value].BackColor = SelectionColor;
 
                 if (Selected != null)
                 {

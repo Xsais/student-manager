@@ -25,7 +25,7 @@ namespace student_manager
             set
             {
 
-                if (value == _current)
+                if (value != null && value == _current)
                 {
 
                     return;
@@ -33,26 +33,44 @@ namespace student_manager
 
                 if (_current.HasValue)
                 {
+                    try
+                    {
+                        var deselected = _avilableMenues[_current.Value];
 
-                    var deselected = _avilableMenues[_current.Value];
+                        deselected.Item1.IsSelected = false;
 
-                    deselected.Item1.IsSelected = false;
-                    deselected.Item2.Visible = false;
+                        if (deselected.Item2 != null)
+                        {
+                            deselected.Item2.Visible = false;
+                        }
+                    } catch (KeyNotFoundException EX)
+                    {
+
+                    }
                 }
 
                 if (value.HasValue)
                 {
-
+                    try
+                    {
                     var selected = _avilableMenues[value.Value];
                     var selectedGroup = (EntityDisplayGroup)selected.Item2;
 
                     selected.Item1.IsSelected = true;
-                    selected.Item2.Visible = true;
 
-                    iPage.Count = selectedGroup.MaxPages;
+                        if (selectedGroup != null)
+                        {
+                            selected.Item2.Visible = true;
+
+                            iPage.Count = selectedGroup.MaxPages;
+
+                            selectedGroup.Selected = null;
+                        }
                     iPage.Selected = 1;
-
-                    selectedGroup.Selected = null;
+                    }
+                    catch (KeyNotFoundException ex)
+                    {
+                    }
                 }
 
                 _current = value;
@@ -69,6 +87,13 @@ namespace student_manager
             _avilableMenues.Add(Menu.Students, Tuple.Create<ClickableDisplay, Control>(cdStudents, edgStudents));
             _avilableMenues.Add(Menu.Professors, Tuple.Create<ClickableDisplay, Control>(cdProfessors, edgProfessors));
 
+            cdHome.Click += (sender, e) => {
+
+                pnlHome.Visible = !pnlHome.Visible;
+                pnlHome.Visible = !pnlHome.Visible;
+
+                Current = Menu.Home;
+            };
             cdPrograms.Click += (sender, e) => Current = Menu.Programs;
             cdCourses.Click += (sender, e) => Current = Menu.Courses;
             cdStudents.Click += (sender, e) => Current = Menu.Students;
@@ -84,7 +109,7 @@ namespace student_manager
                     return;
                 }
 
-                var isVisible = edgStudents.Selected != null;
+                var isVisible = Current.Value != Menu.Home && edgStudents.Selected != null;
 
                 picEdit.Visible = isVisible;
                 picMinus.Visible = isVisible;
