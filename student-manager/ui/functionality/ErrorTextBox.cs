@@ -22,11 +22,13 @@ namespace student_manager.ui.functionality
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
+                    _shownPlaceHolder = true;
 
                     ShowPlaceHolder(this, EventArgs.Empty);
                     return;
                 }
 
+                _shownPlaceHolder = false;
                 HidePlaceHolder(this, EventArgs.Empty);
                 txtText.Text = value;
             }
