@@ -30,6 +30,7 @@
         {
             this.lblNotifications = new System.Windows.Forms.Label();
             this.txtText = new System.Windows.Forms.TextBox();
+            this.lblPlace = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblNotifications
@@ -52,8 +53,14 @@
             this.txtText.Size = new System.Drawing.Size(128, 15);
             this.txtText.TabIndex = 1;
             this.txtText.TextChanged += new System.EventHandler(this.InProgress);
-            this.txtText.Enter += new System.EventHandler(this.HidePlaceHolder);
-            this.txtText.Leave += new System.EventHandler(this.ShowPlaceHolder);
+            // 
+            // lblPlace
+            // 
+            this.lblPlace.BackColor = System.Drawing.Color.Transparent;
+            this.lblPlace.Location = new System.Drawing.Point(0, 0);
+            this.lblPlace.Name = "lblPlace";
+            this.lblPlace.Size = new System.Drawing.Size(128, 15);
+            this.lblPlace.TabIndex = 2;
             // 
             // ErrorTextBox
             // 
@@ -61,6 +68,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lblNotifications);
             this.Controls.Add(this.txtText);
+            this.Controls.Add(this.lblPlace);
             this.Name = "ErrorTextBox";
             this.Size = new System.Drawing.Size(128, 22);
             this.ResumeLayout(false);
@@ -72,5 +80,6 @@
 
         private System.Windows.Forms.Label lblNotifications;
         private System.Windows.Forms.TextBox txtText;
+        private System.Windows.Forms.Label lblPlace;
     }
 }

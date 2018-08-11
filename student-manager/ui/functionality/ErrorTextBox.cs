@@ -13,25 +13,10 @@ namespace student_manager.ui.functionality
 {
     public partial class ErrorTextBox : UserControl
     {
-        private bool _shownPlaceHolder;
-
         public override string Text
         {
-            get => string.Equals(txtText.Text, PlaceHolder) ? "" : txtText.Text;
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    _shownPlaceHolder = true;
-
-                    ShowPlaceHolder(this, EventArgs.Empty);
-                    return;
-                }
-
-                _shownPlaceHolder = false;
-                HidePlaceHolder(this, EventArgs.Empty);
-                txtText.Text = value;
-            }
+            get => txtText.Text;
+            set => txtText.Text = value;
         }
 
         public Color ErrorColor
@@ -64,30 +49,14 @@ namespace student_manager.ui.functionality
 
         public String PlaceHolder
         {
-            get => _placeHolder;
-            set
-            {
-                if (_shownPlaceHolder)
-                {
-                    txtText.Text = value;
-                }
-
-                _placeHolder = value;
-            }
+            get => lblPlace.Text;
+            set => lblPlace.Text = value;
         }
 
         public Color PlaceColor
         {
-            get => _placeColor;
-            set
-            {
-                if (_shownPlaceHolder)
-                {
-                    txtText.ForeColor = value;
-                }
-
-                _placeColor = value;
-            }
+            get => lblPlace.ForeColor;
+            set => lblPlace.ForeColor = value;
         }
 
         public Status Status
@@ -127,30 +96,9 @@ namespace student_manager.ui.functionality
 
         private void InProgress(object sender, EventArgs e)
         {
-            _shownPlaceHolder = string.IsNullOrWhiteSpace(txtText.Text);
+            lblPlace.Text = string.IsNullOrWhiteSpace(txtText.Text) ? "" : PlaceHolder;
+
             TextChanged?.Invoke(sender, e);
-        }
-
-        private void HidePlaceHolder(object sender, EventArgs e)
-        {
-            if (!_shownPlaceHolder)
-            {
-                return;
-            }
-
-            txtText.Text = "";
-            txtText.ForeColor = ForeColor;
-        }
-
-        private void ShowPlaceHolder(object sender, EventArgs e)
-        {
-            if (!_shownPlaceHolder)
-            {
-                return;
-            }
-
-            txtText.Text = PlaceHolder;
-            txtText.ForeColor = PlaceColor;
         }
     }
 }
