@@ -163,20 +163,39 @@ namespace student_manager.ui.display
                 return;
             }
 
-            _avilableEntitys.Remove(entity);
+            var entityIndex = _avilableEntitys.IndexOf(entity);
 
-            var display = _alivalibleEntries[entity];
+            _avilableEntitys.RemoveAt(entityIndex);
 
-            _alivalibleEntries.Remove(entity);
-            Controls.Remove(display);
+            try
+            {
+                var display = _alivalibleEntries[entity];
 
-            _startY -= display.Height + Spacing;
+                --_displayed;
 
-            MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
+                _startY = (entityIndex * display.Height) + (entityIndex * Spacing);
 
-            _selected = null;
+                _selected = null;
 
-            --_displayed;
+                Controls.RemoveAt(entityIndex);
+
+                _alivalibleEntries.Remove(entity);
+
+                for (; entityIndex < Controls.Count; ++entityIndex)
+                {
+
+                    Controls[entityIndex].Top = _startY;
+
+                    _startY += display.Height + Spacing;
+                }
+
+                DisplayEntry(_avilableEntitys[entityIndex]);
+
+                MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
+            } catch (KeyNotFoundException ex)
+            {
+
+            }
         }
 
         private void DisplayFields(Entity entity, EntityDisplay visualDisplay)
