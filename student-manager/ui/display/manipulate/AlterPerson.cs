@@ -87,10 +87,7 @@ namespace student_manager.ui.display.manipulate
                 return;
             }
 
-            _isClean = true;
-            errID.Status = Status.Error;
-
-            errID.Focus();
+            ValidateRequired(sender, e);
         }
 
         private void ValidateRequired(object sender, EventArgs e)
@@ -107,6 +104,7 @@ namespace student_manager.ui.display.manipulate
 
                 _isClean = false;
                 errBox.Status = Status.Normal;
+                return;
             }
 
             _isClean = true;
