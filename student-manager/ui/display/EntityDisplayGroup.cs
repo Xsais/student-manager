@@ -21,6 +21,8 @@ namespace student_manager.ui.display
 
         public EventHandler MaxChanged;
 
+        public Entity this[string id] => _avilableEntitys.FirstOrDefault(entity => entity.ID.Equals(id));
+
         public int MaxPages
         {
             get => _maxPages;
@@ -221,22 +223,12 @@ namespace student_manager.ui.display
         {
             switch (entity)
             {
-                case Student student:
-                    visualDisplay.Header = $"{student.FullName} ({student.ID})";
-                    visualDisplay.Flags = student.Gender.ToString();
-                    visualDisplay.SubHeading = $"Birth: {student.BirthDate:yyyy/MM/dd}";
-                    visualDisplay.Additional = $"Start: {student.BirthDate:yyyy/MM/dd}";
+                case Person person:
+                    visualDisplay.Header = $"{person.FullName} ({person.ID})";
+                    visualDisplay.Flags = person.Gender.ToString();
+                    visualDisplay.SubHeading = $"Birth: {person.BirthDate:yyyy/MM/dd}";
+                    visualDisplay.Additional = $"Start: {person.BirthDate:yyyy/MM/dd}";
                     break;
-                case Professor prof:
-                    visualDisplay.Header = $"{prof.FullName} ({prof.ID})";
-                    visualDisplay.Flags = prof.Gender.ToString();
-                    if (prof.IsFullTime)
-                    {
-                        visualDisplay.Flags += " || Full Time";
-                    }
-
-                    visualDisplay.SubHeading = $"Birth: {prof.BirthDate:yyyy/MM/dd}";
-                    visualDisplay.Additional = $"Start: {prof.BirthDate:yyyy/MM/dd}";
                     break;
                 case Course course:
                     // TODO: Display Course
