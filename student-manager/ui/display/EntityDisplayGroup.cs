@@ -156,20 +156,56 @@ namespace student_manager.ui.display
 
         public void RemoveEntry(Entity entity)
         {
+
+            if (_alivalibleEntries.Count <= 0)
+            {
+                
+                return;
+            }
+
             _avilableEntitys.Remove(entity);
 
-            if (_alivalibleEntries.Count > 0) {
+            var display = _alivalibleEntries[entity];
 
-                var display = _alivalibleEntries[entity];
+            _alivalibleEntries.Remove(entity);
+            Controls.Remove(display);
 
-                _alivalibleEntries.Remove(entity);
-                Controls.Remove(display);
+            _startY -= display.Height + Spacing;
 
-                _startY -= display.Height + Spacing;
+            MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
 
-                MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
+            _selected = null;
 
-                --_displayed;
+            --_displayed;
+        }
+
+        private void DisplayFields(Entity entity, EntityDisplay visualDisplay)
+        {
+            switch (entity)
+            {
+                case Student student:
+                    visualDisplay.Header = $"{student.FullName} ({student.ID})";
+                    visualDisplay.Flags = student.Gender.ToString();
+                    visualDisplay.SubHeading = $"Birth: {student.BirthDate:yyyy/MM/dd}";
+                    visualDisplay.Additional = $"Start: {student.BirthDate:yyyy/MM/dd}";
+                    break;
+                case Professor prof:
+                    visualDisplay.Header = $"{prof.FullName} ({prof.ID})";
+                    visualDisplay.Flags = prof.Gender.ToString();
+                    if (prof.IsFullTime)
+                    {
+                        visualDisplay.Flags += " || Full Time";
+                    }
+
+                    visualDisplay.SubHeading = $"Birth: {prof.BirthDate:yyyy/MM/dd}";
+                    visualDisplay.Additional = $"Start: {prof.BirthDate:yyyy/MM/dd}";
+                    break;
+                case Course course:
+                    // TODO: Display Course
+                    break;
+                case info.opportunity.Program program:
+                    // TODO: Display Program
+                    break;
             }
         }
 
@@ -187,35 +223,11 @@ namespace student_manager.ui.display
 
 
             visualDisplay.Click += (sender, args) =>
+            {
                 Selected = _alivalibleEntries.First(entry => entry.Value.Equals(sender)).Key;
+            };
 
-            if (entity is Student student)
-            {
-                visualDisplay.Header = $"{student.FullName} ({student.ID})";
-                visualDisplay.Flags = student.Gender.ToString();
-                visualDisplay.SubHeading = $"Birth: {student.BirthDate:yyyy/MM/dd}";
-                visualDisplay.Additional = $"Start: {student.BirthDate:yyyy/MM/dd}";
-            }
-            else if (entity is Professor prof)
-            {
-                visualDisplay.Header = $"{prof.FullName} ({prof.ID})";
-                visualDisplay.Flags = prof.Gender.ToString();
-                if (prof.IsFullTime)
-                {
-                    visualDisplay.Flags += " || Full Time";
-                }
-
-                visualDisplay.SubHeading = $"Birth: {prof.BirthDate:yyyy/MM/dd}";
-                visualDisplay.Additional = $"Start: {prof.BirthDate:yyyy/MM/dd}";
-            }
-            else if (entity is Course course)
-            {
-                // TODO: Display Course
-            }
-            else if (entity is info.opportunity.Program program)
-            {
-                // TODO: Display Program
-            }
+            DisplayFields(entity, visualDisplay);
 
             visualDisplay.Top = _startY;
 
@@ -244,6 +256,11 @@ namespace student_manager.ui.display
                 
                 AddEntity(entity);
             }
+        }
+
+        public void UpdateEntity(Entity entity)
+        {
+            DisplayFields(entity, _alivalibleEntries[entity]);
         }
     }
 }
