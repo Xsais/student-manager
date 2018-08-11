@@ -175,7 +175,7 @@ namespace student_manager.ui.display
 
                 _startY = (entityIndex * display.Height) + (entityIndex * Spacing);
 
-                _selected = null;
+                Selected = null;
 
                 Controls.RemoveAt(entityIndex);
 
