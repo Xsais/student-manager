@@ -110,6 +110,31 @@ namespace student_manager
             cdStudents.Click += (sender, e) => Current = Menu.Students;
             cdProfessors.Click += (sender, e) => Current = Menu.Professors;
 
+            picMinus.Click += (sender, args) =>
+            {
+
+                if (_current == null)
+                {
+                    return;
+                }
+                if (Current.Value == Menu.Students)
+                {
+                    edgStudents.RemoveEntry(edgStudents.Selected);
+                }
+                else if (Current.Value == Menu.Professors)
+                {
+                    edgProfessors.RemoveEntry(edgProfessors.Selected);
+                }
+                else if (Current.Value == Menu.Programs)
+                {
+                    edgPrograms.RemoveEntry(edgPrograms.Selected);
+                }
+                else if (Current.Value == Menu.Courses)
+                {
+                    edgCourses.RemoveEntry(edgCourses.Selected);
+                }
+            };
+
             picAdd.Click += (sender, args) =>
             {
 
