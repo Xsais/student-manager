@@ -11,10 +11,14 @@ namespace student_manager.info
 
         public bool IsFullTime { get; set; }
 
-        public Professor(string id, Name fullName, DateTime birthDate, Gender gender, DateTime startDate, bool isFullTime)
-            : base(id, fullName, birthDate, gender, startDate)
+        public Professor(string id, string first, string last, DateTime birthDate, Gender gender, DateTime startDate, bool isFullTime)
+            : base(id, first, last, birthDate, gender, startDate)
         {
             IsFullTime = isFullTime;
+        }
+
+        public Professor() : base()
+        {
         }
     }
 }

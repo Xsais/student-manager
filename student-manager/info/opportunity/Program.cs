@@ -14,5 +14,10 @@ namespace student_manager.info.opportunity
         {
 
         }
+
+        public Program() : base()
+        {
+
+        }
     }
 }

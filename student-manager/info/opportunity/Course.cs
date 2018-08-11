@@ -12,5 +12,9 @@ namespace student_manager.info.opportunity
         public Course(string id) : base(id)
         {
         }
+
+        public Course() : base()
+        {
+        }
     }
 }

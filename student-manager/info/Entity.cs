@@ -16,9 +16,13 @@ namespace student_manager.info.entity
             ID = id;
         }
 
+        public Entity()
+        {
+        }
+
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is Entity))
+            if (!(obj is Entity))
             {
 
                 return false;
@@ -26,5 +30,7 @@ namespace student_manager.info.entity
 
             return ((Entity)obj).ID == ID;
         }
+
+        public bool IsEmpty() => ID == null || ID.Equals("");
     }
 }
