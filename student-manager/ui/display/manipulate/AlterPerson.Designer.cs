@@ -144,6 +144,7 @@
             this.errLast.Status = student_manager.info.Status.Normal;
             this.errLast.StatusColor = System.Drawing.Color.Black;
             this.errLast.TabIndex = 17;
+            this.errLast.Validated += new System.EventHandler(this.ValidateRequired);
             // 
             // errFirst
             // 
@@ -156,6 +157,7 @@
             this.errFirst.Status = student_manager.info.Status.Normal;
             this.errFirst.StatusColor = System.Drawing.Color.Black;
             this.errFirst.TabIndex = 18;
+            this.errFirst.Validated += new System.EventHandler(this.ValidateRequired);
             // 
             // errID
             // 
@@ -168,10 +170,12 @@
             this.errID.Status = student_manager.info.Status.Normal;
             this.errID.StatusColor = System.Drawing.Color.Black;
             this.errID.TabIndex = 19;
+            this.errID.Validated += new System.EventHandler(this.ValidateID);
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(380, 311);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -195,6 +199,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(467, 346);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnCancel);
@@ -211,6 +216,7 @@
             this.Controls.Add(this.lblFirst);
             this.Controls.Add(this.lblID);
             this.Name = "AlterPerson";
+            this.ShowIcon = false;
             this.Text = "AlterPerson";
             this.Controls.SetChildIndex(this.lblID, 0);
             this.Controls.SetChildIndex(this.lblFirst, 0);
