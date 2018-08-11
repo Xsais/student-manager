@@ -96,7 +96,36 @@ namespace student_manager
             Current = Menu.Professors;
 
             #region Alter Forms
-            var alterPerson = new AlterPerson();
+            bool idVerifier(string input)
+            {
+                if (!_current.HasValue)
+                {
+                    return false;
+                }
+                
+                switch (_current.Value)
+                {
+
+                    case Menu.Students:
+
+                        return edgStudents[input] != null;
+                    case Menu.Professors:
+
+                        return edgProfessors[input] != null;
+                    case Menu.Programs:
+                        return true;
+                    case Menu.Courses:
+                        return true;
+                    default:
+
+                        return false;
+                }
+            }
+
+            var alterPerson = new AlterPerson
+            {
+                IDVerifacator = idVerifier
+            };
 
             _alterMenu.Add(Menu.Courses, null);
             _alterMenu.Add(Menu.Professors, alterPerson);
@@ -412,18 +441,18 @@ namespace student_manager
             };
 
             #region Testing_Data
-            edgProfessors.AddEntity(new Professor("PROF0", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
-            edgProfessors.AddEntity(new Professor("PROF1", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
-            edgProfessors.AddEntity(new Professor("PROF2", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
-            edgProfessors.AddEntity(new Professor("PROF3", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
-            edgProfessors.AddEntity(new Professor("PROF4", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
-            edgProfessors.AddEntity(new Professor("PROF5", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+            edgProfessors.AddEntity(new Professor("PROF0", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF1", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF2", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF3", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF4", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF5", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
 
             edgStudents.AddEntity(new Student("STU", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
 
-            edgPrograms.AddEntity(new Professor("PROG", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+            edgPrograms.AddEntity(new Professor("PROG", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
 
-            edgCourses.AddEntity(new Professor("COU", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+            edgCourses.AddEntity(new Professor("COU", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
             #endregion
         }
 
