@@ -173,11 +173,13 @@ namespace student_manager.ui.display
 
                 --_displayed;
 
+                entityIndex = entityIndex % PerPage;
+
                 _startY = (entityIndex * display.Height) + (entityIndex * Spacing);
 
                 Selected = null;
 
-                Controls.RemoveAt(entityIndex);
+                Controls.Remove(display);
 
                 _alivalibleEntries.Remove(entity);
 
@@ -189,7 +191,14 @@ namespace student_manager.ui.display
                     _startY += display.Height + Spacing;
                 }
 
-                DisplayEntry(_avilableEntitys[entityIndex]);
+                if (_displayed - 1 > 0)
+                {
+
+                    DisplayEntry(_avilableEntitys[Math.Min(_displayed + (PerPage * Page), _avilableEntitys.Count) - 1]);
+                } else if (_displayed == 0)
+                {
+                    --Page;
+                }
 
                 MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
             } catch (KeyNotFoundException ex)
