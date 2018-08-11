@@ -19,7 +19,6 @@ namespace student_manager.ui.functionality
             set
             {
                 txtText.Text = value;
-                Console.WriteLine(string.IsNullOrEmpty(value));
                 lblPlace.Visible = string.IsNullOrEmpty(txtText.Text);
             }
         }
