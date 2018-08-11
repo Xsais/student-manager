@@ -13,6 +13,8 @@ namespace student_manager.ui.functionality
 {
     public partial class ErrorTextBox : UserControl
     {
+        private string _errorText;
+
         public override string Text
         {
             get => txtText.Text;
@@ -20,6 +22,26 @@ namespace student_manager.ui.functionality
             {
                 txtText.Text = value;
                 lblPlace.Visible = string.IsNullOrEmpty(txtText.Text);
+            }
+        }
+
+        public string DisplayName { get; set; }
+
+        public string ErrorText
+        {
+            get
+            {
+                return _errorText;
+            }
+            set
+            {
+                if (Status == Status.Error)
+                {
+
+                    lblPlace.Text = value;
+                }
+
+                _errorText = value;
             }
         }
 
@@ -31,6 +53,7 @@ namespace student_manager.ui.functionality
                 if (Status == Status.Error)
                 {
                     lblNotifications.BackColor = value;
+                    lblPlace.ForeColor = value;
                 }
 
                 _errorColor = value;
@@ -51,16 +74,37 @@ namespace student_manager.ui.functionality
             }
         }
 
+        private string _placeText;
+
         public String PlaceHolder
         {
-            get => lblPlace.Text;
-            set => lblPlace.Text = value;
+            get => _placeText;
+            set
+            {
+
+                if (Status == Status.Normal)
+                {
+                    lblPlace.Text = value;
+                }
+
+                _placeText = value;
+            }
         }
+
+        private Color _placeColor;
 
         public Color PlaceColor
         {
-            get => lblPlace.ForeColor;
-            set => lblPlace.ForeColor = value;
+            get => _placeColor;
+            set {
+
+                if (Status == Status.Normal)
+                {
+                    lblPlace.ForeColor = value;
+                }
+
+                _placeColor = value;
+            }
         }
 
         public Status Status
@@ -73,10 +117,16 @@ namespace student_manager.ui.functionality
                     case Status.Error:
 
                         lblNotifications.BackColor = ErrorColor;
+
+                        lblPlace.Text = _errorText;
+                        lblPlace.ForeColor = ErrorColor;
                         break;
                     case Status.Normal:
 
                         lblNotifications.BackColor = StatusColor;
+
+                        lblPlace.Text = _placeText;
+                        lblPlace.ForeColor = _placeColor;
                         break;
                 }
 
