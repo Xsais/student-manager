@@ -57,18 +57,21 @@
             // lblPlace
             // 
             this.lblPlace.BackColor = System.Drawing.Color.Transparent;
+            this.lblPlace.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.lblPlace.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.lblPlace.Location = new System.Drawing.Point(0, 0);
             this.lblPlace.Name = "lblPlace";
             this.lblPlace.Size = new System.Drawing.Size(128, 15);
             this.lblPlace.TabIndex = 2;
+            this.lblPlace.Click += new System.EventHandler(this.StartProgress);
             // 
             // ErrorTextBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lblNotifications);
-            this.Controls.Add(this.txtText);
             this.Controls.Add(this.lblPlace);
+            this.Controls.Add(this.txtText);
             this.Name = "ErrorTextBox";
             this.Size = new System.Drawing.Size(128, 22);
             this.ResumeLayout(false);

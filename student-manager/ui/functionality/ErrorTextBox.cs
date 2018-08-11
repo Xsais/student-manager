@@ -16,7 +16,12 @@ namespace student_manager.ui.functionality
         public override string Text
         {
             get => txtText.Text;
-            set => txtText.Text = value;
+            set
+            {
+                txtText.Text = value;
+                Console.WriteLine(string.IsNullOrEmpty(value));
+                lblPlace.Visible = string.IsNullOrEmpty(txtText.Text);
+            }
         }
 
         public Color ErrorColor
@@ -82,8 +87,6 @@ namespace student_manager.ui.functionality
 
         public new EventHandler TextChanged;
         private Status _status;
-        private string _placeHolder;
-        private Color _placeColor = SystemColors.GrayText;
         private Color _errorColor = Color.FromArgb(183, 28, 28);
         private Color _statusColor = Color.Black;
 
@@ -96,9 +99,14 @@ namespace student_manager.ui.functionality
 
         private void InProgress(object sender, EventArgs e)
         {
-            lblPlace.Text = string.IsNullOrWhiteSpace(txtText.Text) ? "" : PlaceHolder;
+            lblPlace.Visible = string.IsNullOrEmpty(txtText.Text);
 
             TextChanged?.Invoke(sender, e);
+        }
+
+        private void StartProgress(object sender, EventArgs e)
+        {
+            txtText.Focus();
         }
     }
 }
