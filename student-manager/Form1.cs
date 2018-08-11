@@ -85,21 +85,26 @@ namespace student_manager
         {
             InitializeComponent();
 
+            #region Page Binding
             _avilableMenues.Add(Menu.Home, Tuple.Create<ClickableDisplay, Control>(cdHome, null));
             _avilableMenues.Add(Menu.Programs, Tuple.Create<ClickableDisplay, Control>(cdPrograms, edgPrograms));
             _avilableMenues.Add(Menu.Courses, Tuple.Create<ClickableDisplay, Control>(cdCourses, edgCourses));
             _avilableMenues.Add(Menu.Students, Tuple.Create<ClickableDisplay, Control>(cdStudents, edgStudents));
             _avilableMenues.Add(Menu.Professors, Tuple.Create<ClickableDisplay, Control>(cdProfessors, edgProfessors));
+            #endregion
 
             Current = Menu.Professors;
 
+            #region Alter Forms
             var alterPerson = new AlterPerson();
 
             _alterMenu.Add(Menu.Courses, null);
             _alterMenu.Add(Menu.Professors, alterPerson);
             _alterMenu.Add(Menu.Programs, null);
             _alterMenu.Add(Menu.Students, alterPerson);
+            #endregion
 
+            #region Switching Events
             cdHome.Click += (sender, e) =>
             {
                 pnlHome.Visible = !pnlHome.Visible;
@@ -111,7 +116,9 @@ namespace student_manager
             cdCourses.Click += (sender, e) => Current = Menu.Courses;
             cdStudents.Click += (sender, e) => Current = Menu.Students;
             cdProfessors.Click += (sender, e) => Current = Menu.Professors;
+            #endregion
 
+            #region Functionality Events
             picMinus.Click += (sender, args) =>
             {
                 if (_current == null)
@@ -202,6 +209,7 @@ namespace student_manager
                     }
                 }
             };
+            #endregion
 
             #region EventBinding_Pages
 
@@ -403,6 +411,7 @@ namespace student_manager
                 Console.WriteLine($"[{DateTime.Now}] New User Search: \"{sbMain.Text}\"");
             };
 
+            #region Testing_Data
             edgProfessors.AddEntity(new Professor("PROF0", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
             edgProfessors.AddEntity(new Professor("PROF1", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
             edgProfessors.AddEntity(new Professor("PROF2", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
@@ -415,6 +424,7 @@ namespace student_manager
             edgPrograms.AddEntity(new Professor("PROG", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
 
             edgCourses.AddEntity(new Professor("COU", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+            #endregion
         }
 
         private enum Menu
