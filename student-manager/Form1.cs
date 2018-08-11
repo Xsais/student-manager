@@ -351,7 +351,13 @@ namespace student_manager
                 Console.WriteLine($"[{DateTime.Now}] New User Search: \"{sbMain.Text}\"");
             };
 
-            edgProfessors.AddEntity(new Professor("PROF", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+            edgProfessors.AddEntity(new Professor("PROF0", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+            edgProfessors.AddEntity(new Professor("PROF1", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+            edgProfessors.AddEntity(new Professor("PROF2", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+            edgProfessors.AddEntity(new Professor("PROF3", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+            edgProfessors.AddEntity(new Professor("PROF4", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+            edgProfessors.AddEntity(new Professor("PROF5", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
+
             edgStudents.AddEntity(new Student("STU", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
 
             edgPrograms.AddEntity(new Professor("PROG", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
