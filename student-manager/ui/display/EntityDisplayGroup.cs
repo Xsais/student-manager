@@ -150,8 +150,18 @@ namespace student_manager.ui.display
             _avilableEntitys.Add(entity);
 
             DisplayEntry(entity);
+
+            var previousMax = _maxPages;
             
             MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
+
+            if (_maxPages <= previousMax)
+            {
+
+                return;
+            }
+
+            ++Page;
         }
 
         public void RemoveEntry(Entity entity)
