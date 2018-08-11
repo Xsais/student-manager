@@ -144,6 +144,7 @@ namespace student_manager
                 }
                 if (Current.Value == Menu.Students)
                 {
+                    edgStudents.Selected = null;
 
                     var student = new Student();
 
@@ -155,7 +156,8 @@ namespace student_manager
                     }
                 } else if (Current.Value == Menu.Professors)
                 {
-
+                    edgProfessors.Selected = null;
+                    
                     var professor = new Professor();
 
                     _alterMenu[Current.Value].Entity = professor;
@@ -177,6 +179,8 @@ namespace student_manager
 
                 if (Current.Value == Menu.Students)
                 {
+                    edgStudents.Selected = null;
+
                     _alterMenu[Current.Value].Entity = edgStudents.Selected;
 
                     if (_alterMenu[Current.Value].ShowDialog() == DialogResult.OK)
@@ -187,6 +191,8 @@ namespace student_manager
                 }
                 else if (_current != null && Current.Value == Menu.Professors)
                 {
+                    edgProfessors.Selected = null;
+
                     _alterMenu[Current.Value].Entity = edgProfessors.Selected;
 
                     if (_alterMenu[Current.Value].ShowDialog() == DialogResult.OK)
