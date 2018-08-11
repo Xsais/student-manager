@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,8 +17,8 @@ namespace student_manager
 {
     public partial class Form1 : Form
     {
-        
-        private readonly Dictionary<Menu, Tuple<ClickableDisplay, Control>> _avilableMenues = new Dictionary<Menu, Tuple<ClickableDisplay, Control>>();
+        private readonly Dictionary<Menu, Tuple<ClickableDisplay, Control>> _avilableMenues =
+            new Dictionary<Menu, Tuple<ClickableDisplay, Control>>();
 
         private Menu? _current;
 
@@ -28,10 +29,8 @@ namespace student_manager
             get => _current;
             set
             {
-
                 if (value != null && value == _current)
                 {
-
                     return;
                 }
 
@@ -47,9 +46,9 @@ namespace student_manager
                         {
                             deselected.Item2.Visible = false;
                         }
-                    } catch (KeyNotFoundException ex)
+                    }
+                    catch (KeyNotFoundException ex)
                     {
-
                     }
                 }
 
@@ -57,10 +56,10 @@ namespace student_manager
                 {
                     try
                     {
-                    var selected = _avilableMenues[value.Value];
-                    var selectedGroup = (EntityDisplayGroup)selected.Item2;
+                        var selected = _avilableMenues[value.Value];
+                        var selectedGroup = (EntityDisplayGroup) selected.Item2;
 
-                    selected.Item1.IsSelected = true;
+                        selected.Item1.IsSelected = true;
 
                         if (selectedGroup != null)
                         {
@@ -70,7 +69,8 @@ namespace student_manager
 
                             selectedGroup.Selected = null;
                         }
-                    iPage.Selected = 1;
+
+                        iPage.Selected = 1;
                     }
                     catch (KeyNotFoundException ex)
                     {
@@ -91,15 +91,17 @@ namespace student_manager
             _avilableMenues.Add(Menu.Students, Tuple.Create<ClickableDisplay, Control>(cdStudents, edgStudents));
             _avilableMenues.Add(Menu.Professors, Tuple.Create<ClickableDisplay, Control>(cdProfessors, edgProfessors));
 
-            AlterPerson alterPerson = new AlterPerson();
-            
+            Current = Menu.Professors;
+
+            var alterPerson = new AlterPerson();
+
             _alterMenu.Add(Menu.Courses, null);
             _alterMenu.Add(Menu.Professors, alterPerson);
             _alterMenu.Add(Menu.Programs, null);
             _alterMenu.Add(Menu.Students, alterPerson);
 
-            cdHome.Click += (sender, e) => {
-
+            cdHome.Click += (sender, e) =>
+            {
                 pnlHome.Visible = !pnlHome.Visible;
                 pnlHome.Visible = !pnlHome.Visible;
 
@@ -112,11 +114,11 @@ namespace student_manager
 
             picMinus.Click += (sender, args) =>
             {
-
                 if (_current == null)
                 {
                     return;
                 }
+
                 if (Current.Value == Menu.Students)
                 {
                     edgStudents.RemoveEntry(edgStudents.Selected);
@@ -137,11 +139,11 @@ namespace student_manager
 
             picAdd.Click += (sender, args) =>
             {
-
                 if (_current == null)
                 {
                     return;
                 }
+
                 if (Current.Value == Menu.Students)
                 {
                     edgStudents.Selected = null;
@@ -154,10 +156,11 @@ namespace student_manager
                     {
                         edgStudents.AddEntity(student);
                     }
-                } else if (Current.Value == Menu.Professors)
+                }
+                else if (Current.Value == Menu.Professors)
                 {
                     edgProfessors.Selected = null;
-                    
+
                     var professor = new Professor();
 
                     _alterMenu[Current.Value].Entity = professor;
@@ -171,7 +174,6 @@ namespace student_manager
 
             picEdit.Click += (sender, args) =>
             {
-
                 if (_current == null)
                 {
                     return;
@@ -185,7 +187,6 @@ namespace student_manager
 
                     if (_alterMenu[Current.Value].ShowDialog() == DialogResult.OK)
                     {
-
                         edgStudents.UpdateEntity(edgStudents.Selected);
                     }
                 }
@@ -197,7 +198,6 @@ namespace student_manager
 
                     if (_alterMenu[Current.Value].ShowDialog() == DialogResult.OK)
                     {
-
                         edgProfessors.UpdateEntity(edgProfessors.Selected);
                     }
                 }
@@ -205,12 +205,12 @@ namespace student_manager
 
             #region EventBinding_Pages
 
+            #region Programs
+
             edgPrograms.SelectionChanged += (sender, args) =>
             {
                 if (!_current.HasValue || _current.Value != Menu.Programs)
                 {
-
-                    return;
                 }
 
                 var isVisible = edgPrograms.Selected != null;
@@ -224,10 +224,8 @@ namespace student_manager
 
             edgPrograms.MaxChanged += (sender, args) =>
             {
-
                 if (!_current.HasValue || _current.Value != Menu.Programs)
                 {
-
                     return;
                 }
 
@@ -235,11 +233,24 @@ namespace student_manager
                 iPage.Count = edgPrograms.MaxPages;
             };
 
+            edgPrograms.PageChanged += (sender, args) =>
+            {
+                if (Current != Menu.Programs)
+                {
+                    return;
+                }
+
+                iPage.Selected = edgPrograms.Page;
+            };
+
+            #endregion
+
+            #region Courses
+
             edgCourses.SelectionChanged += (sender, args) =>
             {
                 if (!_current.HasValue || _current.Value != Menu.Courses)
                 {
-
                     return;
                 }
 
@@ -254,10 +265,8 @@ namespace student_manager
 
             edgCourses.MaxChanged += (sender, args) =>
             {
-
                 if (!_current.HasValue || _current.Value != Menu.Courses)
                 {
-
                     return;
                 }
 
@@ -265,11 +274,24 @@ namespace student_manager
                 iPage.Count = edgCourses.MaxPages;
             };
 
+            edgCourses.PageChanged += (sender, args) =>
+            {
+                if (Current != Menu.Courses)
+                {
+                    return;
+                }
+
+                iPage.Selected = edgCourses.Page;
+            };
+
+            #endregion
+
+            #region Students
+
             edgStudents.SelectionChanged += (sender, args) =>
             {
                 if (!_current.HasValue || _current.Value != Menu.Students)
                 {
-
                     return;
                 }
 
@@ -286,7 +308,6 @@ namespace student_manager
             {
                 if (!_current.HasValue || _current.Value != Menu.Students)
                 {
-
                     return;
                 }
 
@@ -294,11 +315,24 @@ namespace student_manager
                 iPage.Count = edgStudents.MaxPages;
             };
 
+            edgStudents.PageChanged += (sender, args) =>
+            {
+                if (Current != Menu.Students)
+                {
+                    return;
+                }
+
+                iPage.Selected = edgStudents.Page;
+            };
+
+            #endregion
+
+            #region Professor
+
             edgProfessors.SelectionChanged += (sender, args) =>
             {
                 if (!_current.HasValue || _current.Value != Menu.Professors)
                 {
-
                     return;
                 }
 
@@ -315,7 +349,6 @@ namespace student_manager
             {
                 if (!_current.HasValue || _current.Value != Menu.Professors)
                 {
-
                     return;
                 }
 
@@ -323,11 +356,22 @@ namespace student_manager
                 iPage.Count = edgProfessors.MaxPages;
             };
 
+            edgProfessors.PageChanged += (sender, args) =>
+            {
+                if (Current != Menu.Professors)
+                {
+                    return;
+                }
+
+                iPage.Selected = edgProfessors.Page;
+            };
+
+            #endregion
+
             #endregion
 
             iPage.SelectionChanged += (sender, args) =>
             {
-
                 Console.WriteLine($"[{DateTime.Now}] Page change requested to page {iPage.Selected}");
                 cdPage.Title = iPage.Selected.ToString();
 
@@ -335,10 +379,12 @@ namespace student_manager
                 {
                     return;
                 }
+
                 if (Current.Value == Menu.Students)
                 {
                     edgStudents.Page = iPage.Selected;
-                } else if (Current.Value == Menu.Professors)
+                }
+                else if (Current.Value == Menu.Professors)
                 {
                     edgProfessors.Page = iPage.Selected;
                 }
@@ -369,8 +415,6 @@ namespace student_manager
             edgPrograms.AddEntity(new Professor("PROG", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
 
             edgCourses.AddEntity(new Professor("COU", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now, true));
-
-            Current = Menu.Professors;
         }
 
         private enum Menu
