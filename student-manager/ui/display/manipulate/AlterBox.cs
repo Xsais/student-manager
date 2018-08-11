@@ -14,7 +14,11 @@ namespace student_manager.ui.display.manipulate
 {
     public partial class AlterBox : Form
     {
-        private Entity _entity;
+        protected Entity _entity;
+
+        public Func<string, bool> IDVerifacator { set; protected get; }
+
+        protected bool _isClean = true;
 
         public virtual Entity Entity
         {
