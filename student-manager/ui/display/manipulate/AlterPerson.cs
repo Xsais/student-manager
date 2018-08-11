@@ -75,19 +75,20 @@ namespace student_manager.ui.display.manipulate
 
         private void ValidateID(object sender, EventArgs e)
         {
-            if (IDVerifacator == null) {
-
-                return;
-            }
-
-            if (!IDVerifacator.Invoke(errID.Text)) {
-
-                _isClean = false;
-                errID.Status = Status.Normal;
-                return;
-            }
 
             ValidateRequired(sender, e);
+
+            if (_isClean && IDVerifacator != null && IDVerifacator.Invoke(errID.Text)) {
+
+                _isClean = false;
+                errID.Status = Status.Error;
+
+                errID.ErrorText = $"The ID must be unique";
+                errID.Text = "";
+
+                errID.Focus();
+                return;
+            }
         }
 
         private void ValidateRequired(object sender, EventArgs e)
@@ -103,14 +104,16 @@ namespace student_manager.ui.display.manipulate
             {
 
                 _isClean = false;
-                errBox.Status = Status.Normal;
+                errBox.Status = Status.Error;
+
+                errBox.ErrorText = $"The {errBox.DisplayName} is required";
+
+                errBox.Focus();
                 return;
             }
 
             _isClean = true;
-            errBox.Status = Status.Error;
-
-            errBox.Focus();
+            errBox.Status = Status.Normal;
         }
     }
 }

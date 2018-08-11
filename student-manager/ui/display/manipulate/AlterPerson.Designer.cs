@@ -135,7 +135,9 @@
             // 
             // errLast
             // 
+            this.errLast.DisplayName = "Last Name";
             this.errLast.ErrorColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.errLast.ErrorText = null;
             this.errLast.Location = new System.Drawing.Point(99, 142);
             this.errLast.Name = "errLast";
             this.errLast.PlaceColor = System.Drawing.SystemColors.GrayText;
@@ -148,7 +150,9 @@
             // 
             // errFirst
             // 
+            this.errFirst.DisplayName = "Fist Name";
             this.errFirst.ErrorColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.errFirst.ErrorText = null;
             this.errFirst.Location = new System.Drawing.Point(99, 97);
             this.errFirst.Name = "errFirst";
             this.errFirst.PlaceColor = System.Drawing.SystemColors.GrayText;
@@ -161,7 +165,9 @@
             // 
             // errID
             // 
+            this.errID.DisplayName = "ID";
             this.errID.ErrorColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.errID.ErrorText = null;
             this.errID.Location = new System.Drawing.Point(97, 51);
             this.errID.Name = "errID";
             this.errID.PlaceColor = System.Drawing.SystemColors.GrayText;
