@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.pnlEnties = new System.Windows.Forms.Panel();
+            this.pnlHome = new System.Windows.Forms.Panel();
+            this.lblDivider = new System.Windows.Forms.Label();
+            this.picReport = new System.Windows.Forms.PictureBox();
             this.picLink = new System.Windows.Forms.PictureBox();
             this.picEdit = new System.Windows.Forms.PictureBox();
             this.picMinus = new System.Windows.Forms.PictureBox();
             this.picAdd = new System.Windows.Forms.PictureBox();
-            this.pnlEnties = new System.Windows.Forms.Panel();
-            this.pnlHome = new System.Windows.Forms.Panel();
-            this.lblDivider = new System.Windows.Forms.Label();
-            this.confirm = new student_manager.ui.functionality.ConfirmBox();
             this.cdPrograms = new student_manager.ui.display.ClickableDisplay();
             this.cdStudents = new student_manager.ui.display.ClickableDisplay();
             this.cdProfessors = new student_manager.ui.display.ClickableDisplay();
@@ -49,20 +49,78 @@
             this.iPage = new student_manager.ui.display.Indicator();
             this.cdPage = new student_manager.ui.display.ClickableDisplay();
             this.sbEntites = new student_manager.ui.functionality.SearchBox();
+            this.confirm = new student_manager.ui.functionality.ConfirmBox();
             this.cdPageCount = new student_manager.ui.display.ClickableDisplay();
+            this.pnlEnties.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picReport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLink)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMinus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picAdd)).BeginInit();
-            this.pnlEnties.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // pnlEnties
+            // 
+            this.pnlEnties.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlEnties.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pnlEnties.Controls.Add(this.picReport);
+            this.pnlEnties.Controls.Add(this.edgProfessors);
+            this.pnlEnties.Controls.Add(this.edgCourses);
+            this.pnlEnties.Controls.Add(this.edgPrograms);
+            this.pnlEnties.Controls.Add(this.edgStudents);
+            this.pnlEnties.Controls.Add(this.iPage);
+            this.pnlEnties.Controls.Add(this.cdPage);
+            this.pnlEnties.Controls.Add(this.picLink);
+            this.pnlEnties.Controls.Add(this.picEdit);
+            this.pnlEnties.Controls.Add(this.picMinus);
+            this.pnlEnties.Controls.Add(this.picAdd);
+            this.pnlEnties.Controls.Add(this.sbEntites);
+            this.pnlEnties.Location = new System.Drawing.Point(117, 0);
+            this.pnlEnties.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlEnties.Name = "pnlEnties";
+            this.pnlEnties.Size = new System.Drawing.Size(598, 469);
+            this.pnlEnties.TabIndex = 0;
+            this.pnlEnties.Text = "grpStudents";
+            // 
+            // pnlHome
+            // 
+            this.pnlHome.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlHome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pnlHome.Location = new System.Drawing.Point(-481, 0);
+            this.pnlHome.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlHome.Name = "pnlHome";
+            this.pnlHome.Size = new System.Drawing.Size(598, 469);
+            this.pnlHome.TabIndex = 9;
+            this.pnlHome.Text = "grpStudents";
+            this.pnlHome.Visible = false;
+            // 
+            // lblDivider
+            // 
+            this.lblDivider.BackColor = System.Drawing.Color.Black;
+            this.lblDivider.Location = new System.Drawing.Point(115, 0);
+            this.lblDivider.Name = "lblDivider";
+            this.lblDivider.Size = new System.Drawing.Size(1, 469);
+            this.lblDivider.TabIndex = 6;
+            // 
+            // picReport
+            // 
+            this.picReport.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.picReport.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picReport.Image = ((System.Drawing.Image)(resources.GetObject("picReport.Image")));
+            this.picReport.Location = new System.Drawing.Point(532, 65);
+            this.picReport.Margin = new System.Windows.Forms.Padding(0);
+            this.picReport.Name = "picReport";
+            this.picReport.Size = new System.Drawing.Size(20, 20);
+            this.picReport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picReport.TabIndex = 9;
+            this.picReport.TabStop = false;
             // 
             // picLink
             // 
             this.picLink.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.picLink.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picLink.Image = ((System.Drawing.Image)(resources.GetObject("picLink.Image")));
-            this.picLink.Location = new System.Drawing.Point(532, 67);
+            this.picLink.Location = new System.Drawing.Point(500, 67);
             this.picLink.Margin = new System.Windows.Forms.Padding(0);
             this.picLink.Name = "picLink";
             this.picLink.Size = new System.Drawing.Size(15, 17);
@@ -111,61 +169,6 @@
             this.picAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picAdd.TabIndex = 1;
             this.picAdd.TabStop = false;
-            // 
-            // pnlEnties
-            // 
-            this.pnlEnties.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlEnties.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pnlEnties.Controls.Add(this.edgProfessors);
-            this.pnlEnties.Controls.Add(this.edgCourses);
-            this.pnlEnties.Controls.Add(this.edgPrograms);
-            this.pnlEnties.Controls.Add(this.edgStudents);
-            this.pnlEnties.Controls.Add(this.iPage);
-            this.pnlEnties.Controls.Add(this.cdPage);
-            this.pnlEnties.Controls.Add(this.picLink);
-            this.pnlEnties.Controls.Add(this.picEdit);
-            this.pnlEnties.Controls.Add(this.picMinus);
-            this.pnlEnties.Controls.Add(this.picAdd);
-            this.pnlEnties.Controls.Add(this.sbEntites);
-            this.pnlEnties.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlEnties.Location = new System.Drawing.Point(117, 0);
-            this.pnlEnties.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlEnties.Name = "pnlEnties";
-            this.pnlEnties.Size = new System.Drawing.Size(598, 469);
-            this.pnlEnties.TabIndex = 0;
-            this.pnlEnties.Text = "grpStudents";
-            // 
-            // pnlHome
-            // 
-            this.pnlHome.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlHome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pnlHome.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlHome.Location = new System.Drawing.Point(-481, 0);
-            this.pnlHome.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlHome.Name = "pnlHome";
-            this.pnlHome.Size = new System.Drawing.Size(598, 469);
-            this.pnlHome.TabIndex = 9;
-            this.pnlHome.Text = "grpStudents";
-            this.pnlHome.Visible = false;
-            // 
-            // lblDivider
-            // 
-            this.lblDivider.BackColor = System.Drawing.Color.Black;
-            this.lblDivider.Location = new System.Drawing.Point(115, 0);
-            this.lblDivider.Name = "lblDivider";
-            this.lblDivider.Size = new System.Drawing.Size(1, 469);
-            this.lblDivider.TabIndex = 6;
-            // 
-            // confirm
-            // 
-            this.confirm.BackColor = System.Drawing.Color.Transparent;
-            this.confirm.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.confirm.Location = new System.Drawing.Point(0, 0);
-            this.confirm.Name = "confirm";
-            this.confirm.Opacity = 0.75D;
-            this.confirm.Size = new System.Drawing.Size(715, 469);
-            this.confirm.TabIndex = 9;
-            this.confirm.Visible = false;
             // 
             // cdPrograms
             // 
@@ -359,6 +362,21 @@
             this.sbEntites.Size = new System.Drawing.Size(262, 27);
             this.sbEntites.TabIndex = 8;
             // 
+            // confirm
+            // 
+            this.confirm.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.confirm.BackColor = System.Drawing.Color.Transparent;
+            this.confirm.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.confirm.Location = new System.Drawing.Point(0, 0);
+            this.confirm.Name = "confirm";
+            this.confirm.Opacity = 0.75D;
+            this.confirm.Size = new System.Drawing.Size(715, 469);
+            this.confirm.TabIndex = 9;
+            this.confirm.Title = "Are you sure you want to delete that Program?";
+            this.confirm.Visible = false;
+            // 
             // cdPageCount
             // 
             this.cdPageCount.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -391,11 +409,12 @@
             this.Controls.Add(this.pnlEnties);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.pnlEnties.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picReport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLink)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMinus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picAdd)).EndInit();
-            this.pnlEnties.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -422,6 +441,7 @@
         private ui.display.ClickableDisplay cdPageCount;
         private ui.functionality.SearchBox sbEntites;
         private ui.functionality.ConfirmBox confirm;
+        private System.Windows.Forms.PictureBox picReport;
     }
 }
 

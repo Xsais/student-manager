@@ -22,7 +22,9 @@ namespace student_manager
 
         private Menu? _current;
 
-        private static string _deletionTemplate = "Are you sure you want to {0} that {1}";
+        private readonly ToolTip _masterTip = new ToolTip();
+
+        private const string _deletionTemplate = "Are you sure you want to {0} that {1}";
 
         private readonly Dictionary<Menu, AlterBox> _alterMenu = new Dictionary<Menu, AlterBox>();
 
@@ -75,6 +77,34 @@ namespace student_manager
                             selectedGroup.Selected = null;
 
                             iPage.Selected = 1;
+
+                            switch (value.Value)
+                            {
+                                case Menu.Students:
+                                    
+                                    _masterTip.SetToolTip(picAdd, "Add Student");
+                                    _masterTip.SetToolTip(picMinus, "Delete Student");
+                                    _masterTip.SetToolTip(picLink, "Link Student");
+                                    break;
+                                case Menu.Professors:
+                                    
+                                    _masterTip.SetToolTip(picAdd, "Add Professor");
+                                    _masterTip.SetToolTip(picMinus, "Delete Professor");
+                                    _masterTip.SetToolTip(picLink, "Link Professor");
+                                    break;
+                                case Menu.Programs:
+                                    
+                                    _masterTip.SetToolTip(picAdd, "Add Program");
+                                    _masterTip.SetToolTip(picMinus, "Delete Program");
+                                    _masterTip.SetToolTip(picLink, "Link Program");
+                                    break;
+                                case Menu.Courses:
+                                    
+                                    _masterTip.SetToolTip(picAdd, "Add Course");
+                                    _masterTip.SetToolTip(picMinus, "Delete Course");
+                                    _masterTip.SetToolTip(picLink, "Link Course");
+                                    break;
+                            }
                         } else
                         {
 
@@ -581,6 +611,8 @@ namespace student_manager
 
             edgCourses.AddEntity(new Professor("COU", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
             #endregion
+
+            _masterTip.SetToolTip(picReport, "Export Report");
         }
 
         private enum Menu
