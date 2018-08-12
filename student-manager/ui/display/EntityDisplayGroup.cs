@@ -57,11 +57,11 @@ namespace student_manager.ui.display
                     return;
                 }
 
-                gotoPage(value, _filteredAvilableEntitys == null);
+                gotoPage(value);
             }
         }
 
-        private void gotoPage(int page, bool isLoaded = true)
+        private void gotoPage(int page)
         {
 
             _startY = 0;
@@ -70,7 +70,7 @@ namespace student_manager.ui.display
             Controls.Clear();
             _alivalibleEntries.Clear();
 
-            var usedList = (_filteredAvilableEntitys ?? _avilableEntitys);
+            var usedList = _filteredAvilableEntitys ?? _avilableEntitys;
 
             var startIndex = (page - 1) * PerPage;
             var endIndex = Math.Min(startIndex + PerPage, usedList.Count);
@@ -310,29 +310,30 @@ namespace student_manager.ui.display
 
         public void DrawFiltered(string property, string match)
         {
-            if (_filteredAvilableEntitys == null || !string.Equals(match, _previousMatch))
+            if (_filteredAvilableEntitys != null && string.Equals(match, _previousMatch))
             {
-                _filteredAvilableEntitys = _avilableEntitys.Where(entity =>
-                {
-                    var propertyInfo = entity.GetType().GetProperty(property);
-
-                    return propertyInfo != null && propertyInfo.GetValue(entity, null).ToString().Contains(match);
-                }).ToList();
-
-                if (_filteredAvilableEntitys == null)
-                {
-                    return;
-                }
-
-                _alivalibleEntries.Clear();
-                Controls.Clear();
-
-                gotoPage(1, false);
-
-                MaxPages = CalculatMax();
-
-                _previousMatch = match;
+                return;
             }
+            _filteredAvilableEntitys = _avilableEntitys.Where(entity =>
+            {
+                var propertyInfo = entity.GetType().GetProperty(property);
+
+                return propertyInfo != null && propertyInfo.GetValue(entity, null).ToString().Contains(match);
+            }).ToList();
+
+            if (_filteredAvilableEntitys == null)
+            {
+                return;
+            }
+
+            _alivalibleEntries.Clear();
+            Controls.Clear();
+
+            gotoPage(1);
+
+            MaxPages = CalculatMax();
+
+            _previousMatch = match;
         }
     }
 }
