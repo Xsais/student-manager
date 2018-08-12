@@ -37,7 +37,9 @@
             // 
             this.txtSearchBox.BackColor = System.Drawing.SystemColors.Window;
             this.txtSearchBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtSearchBox.Location = new System.Drawing.Point(3, 7);
+            this.txtSearchBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.txtSearchBox.Location = new System.Drawing.Point(5, 7);
+            this.txtSearchBox.Margin = new System.Windows.Forms.Padding(3, 5, 0, 5);
             this.txtSearchBox.Name = "txtSearchBox";
             this.txtSearchBox.Size = new System.Drawing.Size(228, 13);
             this.txtSearchBox.TabIndex = 7;
@@ -47,7 +49,8 @@
             this.picSearch.BackColor = System.Drawing.SystemColors.Window;
             this.picSearch.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picSearch.Image = global::student_manager.Properties.Resources.search;
-            this.picSearch.Location = new System.Drawing.Point(237, 3);
+            this.picSearch.Location = new System.Drawing.Point(236, 3);
+            this.picSearch.Margin = new System.Windows.Forms.Padding(0, 5, 3, 5);
             this.picSearch.Name = "picSearch";
             this.picSearch.Size = new System.Drawing.Size(21, 21);
             this.picSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -64,10 +67,10 @@
             this.Controls.Add(this.picSearch);
             this.Controls.Add(this.txtSearchBox);
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.MaximumSize = new System.Drawing.Size(260, 27);
-            this.MinimumSize = new System.Drawing.Size(260, 27);
+            this.MaximumSize = new System.Drawing.Size(262, 27);
+            this.MinimumSize = new System.Drawing.Size(262, 27);
             this.Name = "SearchBox";
-            this.Size = new System.Drawing.Size(258, 25);
+            this.Size = new System.Drawing.Size(260, 25);
             ((System.ComponentModel.ISupportInitialize)(this.picSearch)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
