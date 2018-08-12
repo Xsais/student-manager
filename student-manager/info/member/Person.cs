@@ -10,20 +10,18 @@ namespace student_manager.info
 {
     public abstract class Person : Entity
     {
-        private readonly Name _fullName = new Name("", "");
-        
-        public Name FullName => _fullName;
 
+        public Name FullName { get; } = new Name("", "");
         public string FirstName
         {
-            get => _fullName.FirstName;
-            set => _fullName.FirstName = value;
+            get => FullName.FirstName;
+            set => FullName.FirstName = value;
         }
 
         public string LastName
         {
-            get => _fullName.LastName;
-            set => _fullName.LastName = value;
+            get => FullName.LastName;
+            set => FullName.LastName = value;
         }
 
         public DateTime BirthDate { get; set; } = DateTime.Now.AddYears(-20);
