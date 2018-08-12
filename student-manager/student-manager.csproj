@@ -101,6 +101,12 @@
     <Compile Include="ui\display\manipulate\AlterPerson.Designer.cs">
       <DependentUpon>AlterPerson.cs</DependentUpon>
     </Compile>
+    <Compile Include="ui\functionality\ConfirmBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\functionality\ConfirmBox.Designer.cs">
+      <DependentUpon>ConfirmBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="ui\functionality\ErrorTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -143,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ui\display\manipulate\AlterPerson.resx">
       <DependentUpon>AlterPerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\functionality\ConfirmBox.resx">
+      <DependentUpon>ConfirmBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ui\functionality\ErrorTextBox.resx">
       <DependentUpon>ErrorTextBox.cs</DependentUpon>

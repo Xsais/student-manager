@@ -22,6 +22,8 @@ namespace student_manager
 
         private Menu? _current;
 
+        private static string _deletionTemplate = "Are you sure you want to {0} that {1}";
+
         private readonly Dictionary<Menu, AlterBox> _alterMenu = new Dictionary<Menu, AlterBox>();
 
         private Menu? Current
@@ -132,7 +134,47 @@ namespace student_manager
 
             var alterPerson = new AlterPerson
             {
-                IDVerifacator = idVerifier
+                IDVerifacator = idVerifier,
+                Confirming = () =>
+                {
+                    if (_current == null)
+                    {
+                        return;
+                    }
+
+                    if (Current.Value == Menu.Students)
+                    {
+                        confirm.ShowDialog(string.Format(_deletionTemplate, "edit", "Student"), (result) =>
+                        {
+
+                            if (!result)
+                            {
+                                return;
+                            }
+                            _alterMenu[Menu.Students].Confirm();
+                            edgStudents.UpdateEntity(edgStudents.Selected);
+
+                            edgStudents.Selected = null;
+                        });
+                    }
+                    else if (Current.Value == Menu.Professors)
+                    {
+                        confirm.ShowDialog(string.Format(_deletionTemplate, "edit", "Professor"), (result) =>
+                        {
+
+                            if (!result)
+                            {
+                                return;
+                            }
+                            _alterMenu[Menu.Professors].Confirm();
+                            edgProfessors.UpdateEntity(edgProfessors.Selected);
+
+                            edgProfessors.Selected = null;
+                        });
+                    }
+
+                    return;
+                }
             };
 
             _alterMenu.Add(Menu.Courses, null);
@@ -165,19 +207,51 @@ namespace student_manager
 
                 if (Current.Value == Menu.Students)
                 {
-                    edgStudents.RemoveEntry(edgStudents.Selected);
+                    confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Student"), (result) =>
+                    {
+                        if (!result)
+                        {
+                            return;
+                        }
+
+                        edgStudents.RemoveEntry(edgStudents.Selected);
+                    });
                 }
                 else if (Current.Value == Menu.Professors)
                 {
-                    edgProfessors.RemoveEntry(edgProfessors.Selected);
+                    confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Professor"), (result) =>
+                    {
+                        if (!result)
+                        {
+                            return;
+                        }
+
+                        edgProfessors.RemoveEntry(edgProfessors.Selected);
+                    });
                 }
                 else if (Current.Value == Menu.Programs)
                 {
-                    edgPrograms.RemoveEntry(edgPrograms.Selected);
+                    confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Program"), (result) =>
+                    {
+                        if (!result)
+                        {
+                            return;
+                        }
+
+                        edgPrograms.RemoveEntry(edgPrograms.Selected);
+                    });
                 }
                 else if (Current.Value == Menu.Courses)
                 {
-                    edgCourses.RemoveEntry(edgCourses.Selected);
+                    confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Course"), (result) =>
+                    {
+                        if (!result)
+                        {
+                            return;
+                        }
+
+                        edgCourses.RemoveEntry(edgCourses.Selected);
+                    });
                 }
             };
 
@@ -225,8 +299,6 @@ namespace student_manager
 
                 if (Current.Value == Menu.Students)
                 {
-                    edgStudents.Selected = null;
-
                     _alterMenu[Current.Value].Entity = edgStudents.Selected;
 
                     if (_alterMenu[Current.Value].ShowDialog() == DialogResult.OK)
@@ -236,8 +308,6 @@ namespace student_manager
                 }
                 else if (_current != null && Current.Value == Menu.Professors)
                 {
-                    edgProfessors.Selected = null;
-
                     _alterMenu[Current.Value].Entity = edgProfessors.Selected;
 
                     if (_alterMenu[Current.Value].ShowDialog() == DialogResult.OK)
