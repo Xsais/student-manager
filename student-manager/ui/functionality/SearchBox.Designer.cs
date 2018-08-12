@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             this.txtSearchBox = new System.Windows.Forms.TextBox();
+            this.pcExit = new System.Windows.Forms.PictureBox();
             this.picSearch = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pcExit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSearch)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,6 +45,22 @@
             this.txtSearchBox.Name = "txtSearchBox";
             this.txtSearchBox.Size = new System.Drawing.Size(228, 13);
             this.txtSearchBox.TabIndex = 7;
+            this.txtSearchBox.TextChanged += new System.EventHandler(this.Searching);
+            // 
+            // pcExit
+            // 
+            this.pcExit.BackColor = System.Drawing.SystemColors.Window;
+            this.pcExit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pcExit.Image = global::student_manager.Properties.Resources.exit;
+            this.pcExit.Location = new System.Drawing.Point(239, 5);
+            this.pcExit.Margin = new System.Windows.Forms.Padding(0, 5, 3, 5);
+            this.pcExit.Name = "pcExit";
+            this.pcExit.Size = new System.Drawing.Size(16, 16);
+            this.pcExit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pcExit.TabIndex = 9;
+            this.pcExit.TabStop = false;
+            this.pcExit.Visible = false;
+            this.pcExit.Click += new System.EventHandler(this.ClearSearch);
             // 
             // picSearch
             // 
@@ -64,6 +82,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.pcExit);
             this.Controls.Add(this.picSearch);
             this.Controls.Add(this.txtSearchBox);
             this.Margin = new System.Windows.Forms.Padding(0);
@@ -71,6 +90,7 @@
             this.MinimumSize = new System.Drawing.Size(262, 27);
             this.Name = "SearchBox";
             this.Size = new System.Drawing.Size(260, 25);
+            ((System.ComponentModel.ISupportInitialize)(this.pcExit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSearch)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -81,5 +101,6 @@
 
         private System.Windows.Forms.PictureBox picSearch;
         private System.Windows.Forms.TextBox txtSearchBox;
+        private System.Windows.Forms.PictureBox pcExit;
     }
 }

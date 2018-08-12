@@ -21,6 +21,33 @@ namespace student_manager.ui.functionality
             InitializeComponent();
         }
 
-        private void Search(object sender, EventArgs e) => Searched?.Invoke(this, e);
+        private void Search(object sender, EventArgs e)
+        {
+            Searched?.Invoke(this, e);
+        }
+
+        private void Searching(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(Text))
+            {
+                if (picSearch.Visible)
+                {
+                    picSearch.Visible = false;
+                    pcExit.Visible = true;
+                }
+            }
+            else
+            {
+
+                picSearch.Visible = true;
+                pcExit.Visible = false;
+            }
+        }
+
+        private void ClearSearch(object sender, EventArgs e)
+        {
+            txtSearchBox.Text = "";
+            Searched?.Invoke(this, e);
+        }
     }
 }
