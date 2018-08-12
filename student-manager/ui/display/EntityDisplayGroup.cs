@@ -17,6 +17,8 @@ namespace student_manager.ui.display
     {
         private readonly List<Entity> _avilableEntitys = new List<Entity>();
 
+        private List<Entity> _filteredAvilableEntitys;
+
         private readonly Dictionary<Entity, EntityDisplay> _alivalibleEntries = new Dictionary<Entity, EntityDisplay>();
 
         public EventHandler MaxChanged;
@@ -31,9 +33,9 @@ namespace student_manager.ui.display
                 value = Math.Max(value, 1);
                 if (value == _maxPages)
                 {
-
                     return;
                 }
+
                 _maxPages = value;
                 MaxChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -49,37 +51,37 @@ namespace student_manager.ui.display
             get => _page;
             set
             {
-
+                
                 if (_avilableEntitys.Count == 0 || value <= 0 || value == _page)
                 {
-
                     return;
                 }
 
-                _startY = 0;
-                _displayed = 0;
-
-                var startIndex = (_page - 1) * PerPage;
-                var endIndex = Math.Min(startIndex + PerPage, _avilableEntitys.Count);
-
-                for (; startIndex < endIndex; ++startIndex)
-                {
-                    
-                    Controls.Remove(_alivalibleEntries[_avilableEntitys[startIndex]]);
-                    _alivalibleEntries.Remove(_avilableEntitys[startIndex]);
-                }
-                
-                startIndex = (value - 1) * PerPage;
-                endIndex = Math.Min(startIndex + PerPage, _avilableEntitys.Count);
-
-                for (; startIndex < endIndex; ++startIndex)
-                {
-
-                    DisplayEntry(_avilableEntitys[startIndex]);
-                }
-                _page = value;
-                PageChanged?.Invoke(this, EventArgs.Empty);
+                gotoPage(value, _filteredAvilableEntitys == null);
             }
+        }
+
+        private void gotoPage(int page, bool isLoaded = true)
+        {
+
+            _startY = 0;
+            _displayed = 0;
+
+            Controls.Clear();
+            _alivalibleEntries.Clear();
+
+            var usedList = (_filteredAvilableEntitys ?? _avilableEntitys);
+
+            var startIndex = (page - 1) * PerPage;
+            var endIndex = Math.Min(startIndex + PerPage, usedList.Count);
+
+            for (; startIndex < endIndex; ++startIndex)
+            {
+                DisplayEntry(usedList[startIndex]);
+            }
+
+            _page = page;
+            PageChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public Entity Selected
@@ -108,7 +110,7 @@ namespace student_manager.ui.display
         }
 
         public EventHandler SelectionChanged;
-        private Entity _selected = null;
+        private Entity _selected;
 
         public Color SelectionColor { get; set; } = SystemColors.Highlight;
 
@@ -147,19 +149,23 @@ namespace student_manager.ui.display
             InitializeComponent();
         }
 
+        private int CalculatMax() => (int)Math.Ceiling((double)(_filteredAvilableEntitys ?? _avilableEntitys).Count / PerPage);
+
         public void AddEntity(Entity entity)
         {
+            ClearSearch();
+
             _avilableEntitys.Add(entity);
 
             DisplayEntry(entity);
 
             var previousMax = _maxPages;
-            
-            MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
+
+            MaxPages = CalculatMax();
+
 
             if (_maxPages <= previousMax)
             {
-
                 return;
             }
 
@@ -168,10 +174,8 @@ namespace student_manager.ui.display
 
         public void RemoveEntry(Entity entity)
         {
-
             if (_alivalibleEntries.Count <= 0)
             {
-                
                 return;
             }
 
@@ -197,7 +201,6 @@ namespace student_manager.ui.display
 
                 for (; entityIndex < Controls.Count; ++entityIndex)
                 {
-
                     Controls[entityIndex].Top = _startY;
 
                     _startY += display.Height + Spacing;
@@ -205,21 +208,21 @@ namespace student_manager.ui.display
 
                 if (_displayed - 1 > 0)
                 {
-
                     DisplayEntry(_avilableEntitys[Math.Min(_displayed + (PerPage * Page), _avilableEntitys.Count) - 1]);
-                } else if (_displayed == 0)
+                }
+                else if (_displayed == 0)
                 {
                     --Page;
                 }
 
-                MaxPages = (int)Math.Ceiling((double)_avilableEntitys.Count / PerPage);
-            } catch (KeyNotFoundException ex)
+                MaxPages = CalculatMax();
+            }
+            catch (KeyNotFoundException ex)
             {
-
             }
         }
 
-        private void DisplayFields(Entity entity, EntityDisplay visualDisplay)
+        private static void DisplayFields(Entity entity, EntityDisplay visualDisplay)
         {
             switch (entity)
             {
@@ -241,7 +244,7 @@ namespace student_manager.ui.display
 
         private void DisplayEntry(Entity entity)
         {
-            if (_displayed == PerPage)
+            if (_displayed >= PerPage)
             {
                 return;
             }
@@ -262,8 +265,8 @@ namespace student_manager.ui.display
             visualDisplay.Top = _startY;
 
             _startY += visualDisplay.Height + Spacing;
-
-            _alivalibleEntries.Add(entity, visualDisplay);
+            
+                _alivalibleEntries.Add(entity, visualDisplay);
 
             Controls.Add(visualDisplay);
 
@@ -274,7 +277,6 @@ namespace student_manager.ui.display
         {
             foreach (var entity in entitys)
             {
-                
                 RemoveEntry(entity);
             }
         }
@@ -283,7 +285,6 @@ namespace student_manager.ui.display
         {
             foreach (var entity in entitys)
             {
-                
                 AddEntity(entity);
             }
         }
@@ -291,6 +292,47 @@ namespace student_manager.ui.display
         public void UpdateEntity(Entity entity)
         {
             DisplayFields(entity, _alivalibleEntries[entity]);
+        }
+
+        public void ClearSearch()
+        {
+            if (_filteredAvilableEntitys == null)
+            {
+                return;
+            }
+            _filteredAvilableEntitys = null;
+            gotoPage(1);
+
+            MaxPages = CalculatMax();
+        }
+
+        private string _previousMatch;
+
+        public void DrawFiltered(string property, string match)
+        {
+            if (_filteredAvilableEntitys == null || !string.Equals(match, _previousMatch))
+            {
+                _filteredAvilableEntitys = _avilableEntitys.Where(entity =>
+                {
+                    var propertyInfo = entity.GetType().GetProperty(property);
+
+                    return propertyInfo != null && propertyInfo.GetValue(entity, null).ToString().Contains(match);
+                }).ToList();
+
+                if (_filteredAvilableEntitys == null)
+                {
+                    return;
+                }
+
+                _alivalibleEntries.Clear();
+                Controls.Clear();
+
+                gotoPage(1, false);
+
+                MaxPages = CalculatMax();
+
+                _previousMatch = match;
+            }
         }
     }
 }
