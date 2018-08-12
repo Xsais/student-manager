@@ -63,12 +63,12 @@ namespace student_manager.ui.display
                     return;
                 }
 
+                _selectedIndex = value - 1;
+
                 if (_selectedIndex != -1)
                 {
                     Controls[_selectedIndex].BackColor = _indicatorColor;
                 }
-
-                _selectedIndex = value - 1;
 
                 Controls[_selectedIndex].BackColor = _selectionColor;
 
@@ -164,14 +164,17 @@ namespace student_manager.ui.display
 
                 if (_count > value)
                 {
-                    var startIndex = _count - value;
+                    var endIndex = _count - value;
 
-                    _startX -= (_indicatorSize.Width + Spacing) * startIndex;
-
-                    for (; startIndex < Controls.Count; ++startIndex)
+                    for (var i = Controls.Count - 1; i > endIndex; --i)
                     {
-                        Controls.RemoveAt(startIndex);
+
+                        _startX -= _indicatorSize.Width + Spacing;
+
+                        Controls[i].Left = _startX;
                     }
+
+                    Controls.RemoveAt(endIndex);
                 }
                 else
                 {
@@ -180,15 +183,18 @@ namespace student_manager.ui.display
 
                     for (var startIndex = 0; startIndex < endIndex; ++startIndex)
                     {
+
+                        _startX = Controls.Count * (_indicatorSize.Width + Spacing);
+
                         var indicator = new Label
                         {
                             Size = _indicatorSize,
-                            BackColor = IndicatorColor,
+                            BackColor = _indicatorColor,
                             Left = _startX,
                             Cursor = IndicatorCursor
                         };
 
-                        indicator.MouseHover += (sender, e) =>
+                        indicator.MouseEnter += (sender, e) =>
                         {
                             var moused = (Label) sender;
 
@@ -197,7 +203,7 @@ namespace student_manager.ui.display
                                 return;
                             }
 
-                            moused.BackColor = HoverColor;
+                            moused.BackColor = _selectionColor;
                         };
 
                         indicator.MouseLeave += (sender, e) =>
@@ -209,14 +215,12 @@ namespace student_manager.ui.display
                                 return;
                             }
 
-                            moused.BackColor = IndicatorColor;
+                            moused.BackColor = _indicatorColor;
                         };
 
                         indicator.Click += (sender, e) => { Selected = Controls.GetChildIndex((Label) sender) + 1; };
 
                         Controls.Add(indicator);
-
-                        _startX += _indicatorSize.Width + Spacing;
                     }
                 }
 
