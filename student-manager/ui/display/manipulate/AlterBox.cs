@@ -12,9 +12,13 @@ using System.Windows.Forms;
 
 namespace student_manager.ui.display.manipulate
 {
-    public partial class AlterBox : Form
+    public abstract partial class AlterBox : Form
     {
         protected Entity _entity;
+
+        public Action Confirming;
+
+        public abstract void Confirm(bool confirmed = true);
 
         public Func<string, bool> IDVerifacator { set; protected get; }
 

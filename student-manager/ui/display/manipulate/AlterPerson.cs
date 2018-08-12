@@ -55,15 +55,37 @@ namespace student_manager.ui.display.manipulate
             {
                 return;
             }
-            _person.ID = errID.Text;
-            _person.FirstName = errFirst.Text;
-            _person.LastName = errLast.Text;
-            _person.StartDate = dpStart.Value;
-            _person.BirthDate = dpBirth.Value;
-            _person.Gender = (Gender)cbGender.SelectedIndex;
 
-            DialogResult = DialogResult.OK;
+            if (Confirming != null && !_entity.IsEmpty())
+            {
+                Confirming.Invoke();
+                DialogResult = DialogResult.Ignore;
+
+                Close();
+            } else
+            {
+                CleanUpEntity();
+
+                DialogResult = DialogResult.OK;
+            }
+
             Close();
+        }
+
+        private void CleanUpEntity()
+        {
+            if (_entity != null)
+            {
+
+                _person.ID = errID.Text;
+                _person.FirstName = errFirst.Text;
+                _person.LastName = errLast.Text;
+                _person.StartDate = dpStart.Value;
+                _person.BirthDate = dpBirth.Value;
+                _person.Gender = (Gender)cbGender.SelectedIndex;
+
+                _entity = null;
+            }
         }
 
         private void AbortRequested(object sender, EventArgs e)
@@ -114,6 +136,16 @@ namespace student_manager.ui.display.manipulate
 
             _isClean = true;
             errBox.Status = Status.Normal;
+        }
+
+        public override void Confirm(bool confirmed)
+        {
+            if (confirmed)
+            {
+                CleanUpEntity();
+            }
+
+            _entity = null;
         }
     }
 }
