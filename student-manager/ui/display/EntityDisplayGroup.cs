@@ -206,7 +206,7 @@ namespace student_manager.ui.display
                     _startY += display.Height + Spacing;
                 }
 
-                if (_displayed - 1 > 0)
+                if (_displayed == 4  && _page * PerPage <= _avilableEntitys.Count)
                 {
                     DisplayEntry(_avilableEntitys[Math.Min(_displayed + (PerPage * Page), _avilableEntitys.Count) - 1]);
                 }
