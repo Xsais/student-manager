@@ -63,14 +63,22 @@ namespace student_manager
 
                         if (selectedGroup != null)
                         {
+                            pnlEnties.Visible = true;
+                            pnlHome.Visible = false;
+
                             selected.Item2.Visible = true;
 
                             iPage.Count = selectedGroup.MaxPages;
 
                             selectedGroup.Selected = null;
-                        }
 
-                        iPage.Selected = 1;
+                            iPage.Selected = 1;
+                        } else
+                        {
+
+                            pnlEnties.Visible = false;
+                            pnlHome.Visible = true;
+                        }
                     }
                     catch (KeyNotFoundException ex)
                     {
@@ -256,7 +264,7 @@ namespace student_manager
                 picMinus.Visible = isVisible;
                 picLink.Visible = isVisible;
 
-                Console.WriteLine($"[{DateTime.Now}] Current Selection \"{edgStudents.Selected}\"");
+                Console.WriteLine($"[{DateTime.Now}] Current Selection \"{edgPrograms.Selected}\"");
             };
 
             edgPrograms.MaxChanged += (sender, args) =>
@@ -266,7 +274,7 @@ namespace student_manager
                     return;
                 }
 
-                Console.WriteLine($"[{DateTime.Now}] The max page has changed to {edgStudents.MaxPages}");
+                Console.WriteLine($"[{DateTime.Now}] The max page has changed to {edgPrograms.MaxPages}");
                 iPage.Count = edgPrograms.MaxPages;
             };
 
@@ -297,7 +305,7 @@ namespace student_manager
                 picMinus.Visible = isVisible;
                 picLink.Visible = isVisible;
 
-                Console.WriteLine($"[{DateTime.Now}] Current Selection \"{edgStudents.Selected}\"");
+                Console.WriteLine($"[{DateTime.Now}] Current Selection \"{edgCourses.Selected}\"");
             };
 
             edgCourses.MaxChanged += (sender, args) =>
@@ -307,7 +315,7 @@ namespace student_manager
                     return;
                 }
 
-                Console.WriteLine($"[{DateTime.Now}] The max page has changed to {edgStudents.MaxPages}");
+                Console.WriteLine($"[{DateTime.Now}] The max page has changed to {edgCourses.MaxPages}");
                 iPage.Count = edgCourses.MaxPages;
             };
 
@@ -379,7 +387,7 @@ namespace student_manager
                 picMinus.Visible = isVisible;
                 picLink.Visible = isVisible;
 
-                Console.WriteLine($"[{DateTime.Now}] Current Selection \"{edgStudents.Selected}\"");
+                Console.WriteLine($"[{DateTime.Now}] Current Selection \"{edgProfessors.Selected}\"");
             };
 
             edgProfessors.MaxChanged += (sender, args) =>
@@ -389,7 +397,7 @@ namespace student_manager
                     return;
                 }
 
-                Console.WriteLine($"[{DateTime.Now}] The max page has changed to {edgStudents.MaxPages}");
+                Console.WriteLine($"[{DateTime.Now}] The max page has changed to {edgProfessors.MaxPages}");
                 iPage.Count = edgProfessors.MaxPages;
             };
 
@@ -435,18 +443,67 @@ namespace student_manager
                 }
             };
 
-            sbMain.Searched += (sender, e) =>
+            sbEntites.Searched += (sender, e) =>
             {
-                Console.WriteLine($"[{DateTime.Now}] New User Search: \"{sbMain.Text}\"");
+
+                if (_current == null)
+                {
+                    return;
+                }
+
+                if (Current.Value == Menu.Students)
+                {
+                    if (string.IsNullOrWhiteSpace(sbEntites.Text))
+                    {
+                        edgStudents.ClearSearch();
+                        return;
+                    }
+                    edgStudents.DrawFiltered("FullName", sbEntites.Text);
+                }
+                else if (Current.Value == Menu.Professors)
+                {
+                    if (string.IsNullOrWhiteSpace(sbEntites.Text))
+                    {
+                        edgProfessors.ClearSearch();
+                        return;
+                    }
+                    edgProfessors.DrawFiltered("FullName", sbEntites.Text);
+                }
+                else if (Current.Value == Menu.Programs)
+                {
+                    if (string.IsNullOrWhiteSpace(sbEntites.Text))
+                    {
+                        edgPrograms.ClearSearch();
+                        return;
+                    }
+                    edgPrograms.Page = iPage.Selected;
+                }
+                else if (Current.Value == Menu.Courses)
+                {
+                    if (string.IsNullOrWhiteSpace(sbEntites.Text))
+                    {
+                        edgCourses.ClearSearch();
+                        return;
+                    }
+                    edgCourses.Page = iPage.Selected;
+                }
+                Console.WriteLine($"[{DateTime.Now}] Search requested {sbEntites.Text}");
             };
 
             #region Testing_Data
             edgProfessors.AddEntity(new Professor("PROF0", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
-            edgProfessors.AddEntity(new Professor("PROF1", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
-            edgProfessors.AddEntity(new Professor("PROF2", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
-            edgProfessors.AddEntity(new Professor("PROF3", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
-            edgProfessors.AddEntity(new Professor("PROF4", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
-            edgProfessors.AddEntity(new Professor("PROF5", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF10", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF11", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF12", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF14", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF15", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF16", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF17", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF1", "Bob", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF2", "Amanda", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF3", "Felex", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF4", "Kevin", "A", DateTime.Now, Gender.Male, DateTime.Now));
+            edgProfessors.AddEntity(new Professor("PROF5", "Jane", "A", DateTime.Now, Gender.Male, DateTime.Now));
 
             edgStudents.AddEntity(new Student("STU", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
 
