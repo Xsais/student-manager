@@ -15,6 +15,8 @@ namespace student_manager.ui.display
 {
     public partial class EntityDisplayGroup : UserControl
     {
+        private readonly ToolTip _masterTip = new ToolTip();
+
         private readonly List<Entity> _avilableEntitys = new List<Entity>();
 
         private List<Entity> _filteredAvilableEntitys;
@@ -266,7 +268,9 @@ namespace student_manager.ui.display
 
             _startY += visualDisplay.Height + Spacing;
             
-                _alivalibleEntries.Add(entity, visualDisplay);
+            _alivalibleEntries.Add(entity, visualDisplay);
+
+            _masterTip.SetToolTip(visualDisplay, $"{entity.GetType().ToString().Split('.').Last()}: {entity}");
 
             Controls.Add(visualDisplay);
 
