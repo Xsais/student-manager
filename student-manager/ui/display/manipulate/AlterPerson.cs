@@ -17,6 +17,9 @@ namespace student_manager.ui.display.manipulate
     {
         private Person _person;
 
+        protected override bool isValidID(string ID) => 
+            _entity.ID.Equals(ID) || Professor.All.Count(entity => entity.ID.Equals(ID)) == 0;
+
         public override Entity Entity
         {
 
@@ -38,6 +41,10 @@ namespace student_manager.ui.display.manipulate
                 dpStart.Value = _person.StartDate;
                 dpBirth.Value = _person.BirthDate;
                 cbGender.SelectedIndex = (int)_person.Gender;
+
+                errID.Status = Status.Normal;
+                errFirst.Status = Status.Normal;
+                errLast.Status = Status.Normal;
             }
         }
 
@@ -100,8 +107,8 @@ namespace student_manager.ui.display.manipulate
 
             ValidateRequired(sender, e);
 
-            if (_isClean && IDVerifacator != null && IDVerifacator.Invoke(errID.Text)) {
-
+            if (_isClean && !isValidID(errID.Text))
+            {
                 _isClean = false;
                 errID.Status = Status.Error;
 
@@ -109,7 +116,6 @@ namespace student_manager.ui.display.manipulate
                 errID.Text = "";
 
                 errID.Focus();
-                return;
             }
         }
 
@@ -120,7 +126,7 @@ namespace student_manager.ui.display.manipulate
                 return;
             }
 
-            var errBox = ((ErrorTextBox)sender);
+            var errBox = (ErrorTextBox)sender;
 
             if (string.IsNullOrWhiteSpace(errBox.Text))
             {

@@ -1,5 +1,6 @@
 ﻿using student_manager.info;
 using student_manager.info.entity;
+using student_manager.info.opportunity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,9 +21,9 @@ namespace student_manager.ui.display.manipulate
 
         public abstract void Confirm(bool confirmed = true);
 
-        public Func<string, bool> IDVerifacator { set; protected get; }
-
         protected bool _isClean = true;
+
+        protected abstract bool isValidID(string ID);
 
         public virtual Entity Entity
         {
@@ -48,7 +49,17 @@ namespace student_manager.ui.display.manipulate
                             lblTitle.Text = value.IsEmpty() ? "New Professor" : "Edit Professor";
 
                             break;
-                    }
+                        case Course _:
+
+                            lblTitle.Text = value.IsEmpty() ? "New Course" : "Edit Course";
+
+                        break;
+                        case info.opportunity.Program _:
+
+                            lblTitle.Text = value.IsEmpty() ? "New Program" : "Edit Program";
+
+                        break;
+                }
 
                 _entity = value;
                 }
