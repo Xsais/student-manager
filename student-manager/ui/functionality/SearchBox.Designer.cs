@@ -46,6 +46,7 @@
             this.txtSearchBox.Size = new System.Drawing.Size(228, 13);
             this.txtSearchBox.TabIndex = 7;
             this.txtSearchBox.TextChanged += new System.EventHandler(this.Searching);
+            this.txtSearchBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Search);
             // 
             // pcExit
             // 
