@@ -20,6 +20,10 @@ namespace student_manager.ui.display
         private readonly List<Entity> _avilableEntitys = new List<Entity>();
 
         private List<Entity> _filteredAvilableEntitys;
+        
+        private readonly List<Entity> _specialEntities = new List<Entity>();
+        
+        private static readonly Color _specialColr = Color.FromArgb(75, Color.Gray);
 
         private readonly Dictionary<Entity, EntityDisplay> _alivalibleEntries = new Dictionary<Entity, EntityDisplay>();
 
@@ -101,9 +105,10 @@ namespace student_manager.ui.display
                     _alivalibleEntries[value].BackColor = SelectionColor;
                 }
 
-                if (Selected != null)
+                if (_selected != null)
                 {
-                    _alivalibleEntries[_selected].BackColor = BackColor;
+                    _alivalibleEntries[_selected].BackColor =
+                        _specialEntities.Contains(_selected) ? _specialColr : BackColor;
                 }
 
                 _selected = value;
@@ -226,27 +231,39 @@ namespace student_manager.ui.display
 
         private static void DisplayFields(Entity entity, EntityDisplay visualDisplay)
         {
+
             switch (entity)
             {
                 case Person person:
+
                     visualDisplay.Header = $"{person.FullName} ({person.ID})";
                     visualDisplay.Flags = person.Gender.ToString();
                     visualDisplay.SubHeading = $"Birth: {person.BirthDate:yyyy/MM/dd}";
                     visualDisplay.Additional = $"Start: {person.BirthDate:yyyy/MM/dd}";
                     break;
-                    break;
                 case Course course:
-                    // TODO: Display Course
+
+                    visualDisplay.Header = $"{course.Name} ({course.ID})";
+                    visualDisplay.SubHeading = $"Capacity: {course.Capacity}";
+                    visualDisplay.Additional = $"Credits: {course.Credits:F2}";
                     break;
                 case info.opportunity.Program program:
-                    // TODO: Display Program
+
+                    visualDisplay.Header = $"{program.Name} ({program.ID})";
+
+                    if (program.IsCOOP)
+                    {
+                        visualDisplay.Flags = "Co-Op";
+                    }
+                    visualDisplay.SubHeading = $"Duration: {Math.Round(program.Duration.TotalDays / 365, 2)} Years";
+                    visualDisplay.Additional = $"Outcome: {program.Outcome.ToString().Replace("_", " ")}";
                     break;
             }
         }
 
         private void DisplayEntry(Entity entity)
         {
-            if (_displayed >= PerPage)
+            if (_displayed >= PerPage || _alivalibleEntries.Count(lookup => lookup.Key.Equals(entity)) != 0)
             {
                 return;
             }
@@ -287,14 +304,29 @@ namespace student_manager.ui.display
 
         public void AddAll(IEnumerable<Entity> entitys)
         {
+            if (entitys == null)
+            {
+                return;
+            }
             foreach (var entity in entitys)
             {
                 AddEntity(entity);
             }
         }
 
-        public void UpdateEntity(Entity entity)
+        public void UpdateEntity(Entity entity, bool isSpecial = false)
         {
+            if (isSpecial)
+            {
+                _alivalibleEntries[entity].BackColor = _specialColr;
+                _specialEntities.Add(entity);
+            }
+            else
+            {
+                _alivalibleEntries[entity].BackColor = Color.Transparent;
+                _specialEntities.Remove(entity);
+            }
+
             DisplayFields(entity, _alivalibleEntries[entity]);
         }
 
