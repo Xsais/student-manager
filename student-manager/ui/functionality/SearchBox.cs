@@ -46,6 +46,8 @@ namespace student_manager.ui.functionality
         private void Search(object sender, EventArgs e)
         {
             Searched?.Invoke(this, e);
+                    picSearch.Visible = false;
+                    pcExit.Visible = true;
         }
 
         /// <summary>
@@ -79,6 +81,8 @@ namespace student_manager.ui.functionality
         {
             txtSearchBox.Text = "";
             Searched?.Invoke(this, e);
+                picSearch.Visible = true;
+                pcExit.Visible = false;
         }
     }
 }
