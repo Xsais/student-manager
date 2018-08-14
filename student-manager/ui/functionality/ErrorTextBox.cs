@@ -18,11 +18,7 @@ namespace student_manager.ui.functionality
         public override string Text
         {
             get => txtText.Text;
-            set
-            {
-                txtText.Text = value;
-                lblPlace.Visible = string.IsNullOrEmpty(txtText.Text);
-            }
+            set => txtText.Text = value;
         }
 
         public string DisplayName { get; set; }
