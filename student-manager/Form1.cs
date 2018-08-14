@@ -397,15 +397,13 @@ namespace student_manager
                 Clipboard.SetText(pdfHTML);
                 Console.WriteLine(_fileChooser.FileName);
 
-                if (!File.Exists(_fileChooser.FileName))
+                if (File.Exists(_fileChooser.FileName)
+                    && MessageBox.Show("The file is not empty.\n Replace contents?") != DialogResult.OK)
                 {
                     return;
                 }
-                if (MessageBox.Show("The file is not empty.\n Replace contents?") == DialogResult.OK)
-                {
 
-                    _pdfConverter.RenderHtmlAsPdf(pdfHTML).SaveAs(_fileChooser.FileName);
-                }
+                _pdfConverter.RenderHtmlAsPdf(pdfHTML).SaveAs(_fileChooser.FileName);
             };
 
             picLink.Click += (sendeer, args) =>
