@@ -1,4 +1,17 @@
-﻿using student_manager.info;
+﻿/**
+ * File: ProfessorLink.cs
+ * Assignment: Final_Project
+ * Creation date: August 6, 2018
+ * Last Modified: August 14, 2018
+ * Description: Handles the links made by a professor
+ *
+ * Group Members:
+ *    - Emily Ramanna
+ *    - James Grau
+ *    - Nathaniel Primo
+**/
+
+using student_manager.info;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,8 +28,10 @@ namespace student_manager.ui.functionality.links
     {
         private Professor Professor { get; set; }
 
-        private readonly ToolTip _masterTip = new ToolTip();
-
+        /// <summary>
+        /// Handles creaating and removing links
+        /// </summary>
+        /// <param name="professor">The desired professor to add links</param>
         public ProfessorLink(Professor professor)
         {
             InitializeComponent();
@@ -64,18 +79,14 @@ namespace student_manager.ui.functionality.links
 
             edgCourses.MaxChanged += (sender, args) =>
             {
-
                 Console.WriteLine($"[{DateTime.Now}] The max page has changed to {edgCourses.MaxPages}");
                 iPage.Count = edgCourses.MaxPages;
             };
 
-            edgCourses.PageChanged += (sender, args) =>
-            {
-
-                iPage.Selected = edgCourses.Page;
-            };
+            edgCourses.PageChanged += (sender, args) => { iPage.Selected = edgCourses.Page; };
 
             #endregion
+
             #endregion
 
             iPage.SelectionChanged += (sender, args) =>
@@ -88,12 +99,13 @@ namespace student_manager.ui.functionality.links
 
             sbEntites.Searched += (sender, e) =>
             {
-                    if (string.IsNullOrWhiteSpace(sbEntites.Text))
-                    {
-                        edgCourses.ClearSearch();
-                        return;
-                    }
-                    edgCourses.Page = iPage.Selected;
+                if (string.IsNullOrWhiteSpace(sbEntites.Text))
+                {
+                    edgCourses.ClearSearch();
+                    return;
+                }
+
+                edgCourses.Page = iPage.Selected;
                 Console.WriteLine($"[{DateTime.Now}] Search requested {sbEntites.Text}");
             };
 

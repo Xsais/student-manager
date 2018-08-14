@@ -1,4 +1,17 @@
-﻿using System;
+﻿/**
+ * File: Form1.cs
+ * Assignment: Final_Project
+ * Creation date: August 6, 2018
+ * Last Modified: August 14, 2018
+ * Description: Handles visual displaying the database and the functionality
+ *
+ * Group Members:
+ *    - Emily Ramanna
+ *    - James Grau
+ *    - Nathaniel Primo
+**/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,40 +34,52 @@ namespace student_manager
 {
     public partial class Form1 : Form
     {
+        // Stores the html of all links used to generate the pdf
         private readonly Dictionary<LinkType, Tuple<ClickableDisplay, Control>> _avilableLinkTypees =
             new Dictionary<LinkType, Tuple<ClickableDisplay, Control>>();
-        
+
+        // Handles retrieval of a file path from the user
         private static readonly OpenFileDialog _fileChooser = new OpenFileDialog();
 
+        // Handles generating of reports
         private static readonly HtmlToPdf _pdfConverter = new HtmlToPdf();
 
+        // Stores the current menu that is bieng displayed to the user
         private LinkType? _current;
 
+        // Handles tooltip generation and deletion
         private readonly ToolTip _masterTip = new ToolTip();
 
+        // Stores the template that is displayed to the user
         private const string _deletionTemplate = "Are you sure you want to {0} that {1}";
 
+        // Stores a refrence to the forms that handing altering each type
         private readonly Dictionary<LinkType, AlterBox> _alterLinkType = new Dictionary<LinkType, AlterBox>();
 
+        // Handles the visual switching of each menu
         private LinkType? Current
         {
             get => _current;
             set
             {
-                if (value != null && value == _current)
+                // Determines if the desired menu is valid
+                if (value.HasValue && value == _current)
                 {
                     return;
                 }
 
+                // Handles erasing the current menu if switching from a menu
                 if (_current.HasValue)
                 {
                     try
                     {
+                        // Gets the button that inks to the current menu bieng displayed
                         var deselected = _avilableLinkTypees[_current.Value];
 
                         deselected.Item1.Cursor = Cursors.Hand;
                         deselected.Item1.IsSelected = false;
 
+                        // Displays the control linked with the button if it exists
                         if (deselected.Item2 != null)
                         {
                             deselected.Item2.Visible = false;
@@ -65,68 +90,72 @@ namespace student_manager
                     }
                 }
 
-                if (value.HasValue)
+                // visually displays the menu to to user if one is avilable
+                try
                 {
-                    try
+                    var selected = _avilableLinkTypees[value.Value];
+                    var selectedGroup = (EntityDisplayGroup) selected.Item2;
+
+                    selected.Item1.Cursor = Cursors.Default;
+                    selected.Item1.IsSelected = true;
+
+
+                    // Sets up the display group to show and display the correct page
+                    if (selectedGroup != null)
                     {
-                        var selected = _avilableLinkTypees[value.Value];
-                        var selectedGroup = (EntityDisplayGroup) selected.Item2;
+                        pnlEnties.Visible = true;
+                        pnlHome.Visible = false;
 
-                        selected.Item1.Cursor = Cursors.Default;
-                        selected.Item1.IsSelected = true;
+                        selected.Item2.Visible = true;
 
-                        if (selectedGroup != null)
+                        // Display the correct ammount of dotts to the user
+                        iPage.Count = selectedGroup.MaxPages;
+
+                        // Ensures nothing is selected in the used display group associated with the menu
+                        selectedGroup.Selected = null;
+
+                        iPage.Selected = 1;
+
+                        // Sets the appropriated tooltip name based on the desired menu
+                        switch (value.Value)
                         {
-                            pnlEnties.Visible = true;
-                            pnlHome.Visible = false;
+                            case LinkType.Students:
 
-                            selected.Item2.Visible = true;
+                                _masterTip.SetToolTip(picAdd, "Add Student");
+                                _masterTip.SetToolTip(picMinus, "Delete Student");
+                                _masterTip.SetToolTip(picLink, "Link Student");
+                                break;
+                            case LinkType.Professors:
 
-                            iPage.Count = selectedGroup.MaxPages;
+                                _masterTip.SetToolTip(picAdd, "Add Professor");
+                                _masterTip.SetToolTip(picMinus, "Delete Professor");
+                                _masterTip.SetToolTip(picLink, "Link Professor");
+                                break;
+                            case LinkType.Programs:
 
-                            selectedGroup.Selected = null;
+                                _masterTip.SetToolTip(picAdd, "Add Program");
+                                _masterTip.SetToolTip(picMinus, "Delete Program");
+                                _masterTip.SetToolTip(picLink, "Link Program");
+                                break;
+                            case LinkType.Courses:
 
-                            iPage.Selected = 1;
-
-                            switch (value.Value)
-                            {
-                                case LinkType.Students:
-                                    
-                                    _masterTip.SetToolTip(picAdd, "Add Student");
-                                    _masterTip.SetToolTip(picMinus, "Delete Student");
-                                    _masterTip.SetToolTip(picLink, "Link Student");
-                                    break;
-                                case LinkType.Professors:
-                                    
-                                    _masterTip.SetToolTip(picAdd, "Add Professor");
-                                    _masterTip.SetToolTip(picMinus, "Delete Professor");
-                                    _masterTip.SetToolTip(picLink, "Link Professor");
-                                    break;
-                                case LinkType.Programs:
-                                    
-                                    _masterTip.SetToolTip(picAdd, "Add Program");
-                                    _masterTip.SetToolTip(picMinus, "Delete Program");
-                                    _masterTip.SetToolTip(picLink, "Link Program");
-                                    break;
-                                case LinkType.Courses:
-                                    
-                                    _masterTip.SetToolTip(picAdd, "Add Course");
-                                    _masterTip.SetToolTip(picMinus, "Delete Course");
-                                    _masterTip.SetToolTip(picLink, "Link Course");
-                                    break;
-                            }
-                        } else
-                        {
-
-                            pnlEnties.Visible = false;
-                            pnlHome.Visible = true;
+                                _masterTip.SetToolTip(picAdd, "Add Course");
+                                _masterTip.SetToolTip(picMinus, "Delete Course");
+                                _masterTip.SetToolTip(picLink, "Link Course");
+                                break;
                         }
                     }
-                    catch (KeyNotFoundException ex)
+                    else
                     {
+                        pnlEnties.Visible = false;
+                        pnlHome.Visible = true;
                     }
                 }
+                catch (KeyNotFoundException ex)
+                {
+                }
 
+                // Resets all buttons since nothing is selected
                 picMinus.Visible = false;
                 picEdit.Visible = false;
                 picLink.Visible = false;
@@ -135,24 +164,37 @@ namespace student_manager
             }
         }
 
+        /// <summary>
+        /// Intailizes all needed things to properly display the database
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
 
+            // Add the links in order to switch between pages
+
             #region Page Binding
+
             _avilableLinkTypees.Add(LinkType.Home, Tuple.Create<ClickableDisplay, Control>(cdHome, null));
-            _avilableLinkTypees.Add(LinkType.Programs, Tuple.Create<ClickableDisplay, Control>(cdPrograms, edgPrograms));
+            _avilableLinkTypees.Add(LinkType.Programs,
+                Tuple.Create<ClickableDisplay, Control>(cdPrograms, edgPrograms));
             _avilableLinkTypees.Add(LinkType.Courses, Tuple.Create<ClickableDisplay, Control>(cdCourses, edgCourses));
-            _avilableLinkTypees.Add(LinkType.Students, Tuple.Create<ClickableDisplay, Control>(cdStudents, edgStudents));
-            _avilableLinkTypees.Add(LinkType.Professors, Tuple.Create<ClickableDisplay, Control>(cdProfessors, edgProfessors));
+            _avilableLinkTypees.Add(LinkType.Students,
+                Tuple.Create<ClickableDisplay, Control>(cdStudents, edgStudents));
+            _avilableLinkTypees.Add(LinkType.Professors,
+                Tuple.Create<ClickableDisplay, Control>(cdProfessors, edgProfessors));
+
             #endregion
 
+            // The starting page showed when the app is started
             Current = LinkType.Students;
 
             #region Alter Forms
 
+            // The form used to add or modify an professeor or student
             var alterPerson = new AlterPerson
             {
+                // Display the correct confimation message depending on the current menu the user is on
                 Confirming = () =>
                 {
                     if (_current == null)
@@ -164,12 +206,15 @@ namespace student_manager
                     {
                         confirm.ShowDialog(string.Format(_deletionTemplate, "edit", "Student"), result =>
                         {
-
                             if (!result)
                             {
                                 return;
                             }
+
+                            // Confirm the modifications made by the user
                             _alterLinkType[LinkType.Students].Confirm();
+
+                            // Updates the visuall display of the entity
                             edgStudents.UpdateEntity(edgStudents.Selected);
 
                             edgStudents.Selected = null;
@@ -179,12 +224,15 @@ namespace student_manager
                     {
                         confirm.ShowDialog(string.Format(_deletionTemplate, "edit", "Professor"), result =>
                         {
-
                             if (!result)
                             {
                                 return;
                             }
+
+                            // Confirm the modifications made by the user
                             _alterLinkType[LinkType.Professors].Confirm();
+
+                            // Updates the visuall display of the entity
                             edgProfessors.UpdateEntity(edgProfessors.Selected);
 
                             edgProfessors.Selected = null;
@@ -195,217 +243,240 @@ namespace student_manager
                 }
             };
 
+            // Liks the forms in wich is used to alter the entities
             _alterLinkType.Add(LinkType.Courses, null);
             _alterLinkType.Add(LinkType.Professors, alterPerson);
             _alterLinkType.Add(LinkType.Programs, null);
             _alterLinkType.Add(LinkType.Students, alterPerson);
+
             #endregion
 
-            #region Switching Events
-            cdHome.Click += (sender, e) =>
-            {
-                pnlHome.Visible = !pnlHome.Visible;
-                pnlHome.Visible = !pnlHome.Visible;
+            // Enables the user to switch menu bby clicking the menu names displayed
 
-                Current = LinkType.Home;
-            };
+            #region Switching Events
+
+            cdHome.Click += (sender, e) => Current = LinkType.Home;
             cdPrograms.Click += (sender, e) => Current = LinkType.Programs;
             cdCourses.Click += (sender, e) => Current = LinkType.Courses;
             cdStudents.Click += (sender, e) => Current = LinkType.Students;
             cdProfessors.Click += (sender, e) => Current = LinkType.Professors;
+
             #endregion
 
+            // Enables the functionality when clicking the displaed buttons
+
             #region Functionality Events
+
             picReport.Click += (sendeer, args) =>
             {
-                    if (_current == null)
-                    {
-                        return;
-                    }
+                if (_current == null)
+                {
+                    return;
+                }
 
-                    var linkHTML = new Dictionary<Type, string>();
+                // The sub html of all the links used to make the pdf
+                var linkHTML = new Dictionary<Type, string>();
 
-                    var pdfHTML = "<h1 style='text-align: center;'>Student Manager Report</h1>";
+                // The html used to make the pdf initalized to the standered header
+                var pdfHTML = "<h1 style='text-align: center;'>Student Manager Report</h1>";
 
-                    switch (Current.Value)
-                    {
-                        case LinkType.Students:
-                            
-                            #region Generate Student Report
-                            pdfHTML += "<h2 style='text-align: center;'>Students</h2><br /><br />"
-                                       + "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center; width: 100%;'><tr>"
-                                       + "<th>ID</th>"
-                                       + "<th>Name</th>"
-                                       + "<th>Birthday</th>"
-                                       + "<th>Gender</th>"
-                                       + "<th>Startdate</th></tr>";
+                switch (Current.Value)
+                {
+                    case LinkType.Students:
+                        // Generates the html for the student 
 
-                            foreach (var person in Student.All)
+                        #region Generate Student Report
+
+                        pdfHTML += "<h2 style='text-align: center;'>Students</h2><br /><br />"
+                                   + "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center; width: 100%;'><tr>"
+                                   + "<th>ID</th>"
+                                   + "<th>Name</th>"
+                                   + "<th>Birthday</th>"
+                                   + "<th>Gender</th>"
+                                   + "<th>Startdate</th></tr>";
+
+                        // Generates the html to visual show each person and thier links
+                        foreach (var person in Student.All)
+                        {
+                            pdfHTML += $"<tr><td>{person.ID}</td>"
+                                       + $"<td>{person.FullName}</td>"
+                                       + $"<td>{person.BirthDate:YYYY-MM-DD}</td>"
+                                       + $"<td>{person.Gender}</td>"
+                                       + $"<td>{person.StartDate:YYYY-MM-DD}</td></tr>";
+
+                            // Generates html for each link
+                            foreach (var personLink in person.Links)
                             {
-                                pdfHTML += $"<tr><td>{person.ID}</td>"
-                                           + $"<td>{person.FullName}</td>"
-                                           + $"<td>{person.BirthDate:YYYY-MM-DD}</td>"
-                                           + $"<td>{person.Gender}</td>"
-                                           + $"<td>{person.StartDate:YYYY-MM-DD}</td></tr>";
-
-                                foreach (var personLink in person.Links)
+                                // Determines the text depending on the type of the link
+                                switch (personLink)
                                 {
-                                    switch (personLink)
-                                    {
-                                        case Course _:
-                                            try
-                                            {
-                                                linkHTML.Add(typeof(Course),
-                                                    "<h2 style='text-align: center;'>Courses</h2>"
-                                                    + "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center; width: 100%;'><tr>"
-                                                    + "<th>ID</th>"
-                                                    + "<th>Name</th>"
-                                                    + "<th>Capacity</th>"
-                                                    + "<th>Credits</th></tr>"
-                                                    + $"<tr><th colspan='4'>{person}<th></tr>");
-                                            }
-                                            catch (Exception e)
-                                            {
-                                            }
+                                    case Course _:
+                                        try
+                                        {
+                                            linkHTML.Add(typeof(Course),
+                                                "<h2 style='text-align: center;'>Courses</h2>"
+                                                + "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center; width: 100%;'><tr>"
+                                                + "<th>ID</th>"
+                                                + "<th>Name</th>"
+                                                + "<th>Capacity</th>"
+                                                + "<th>Credits</th></tr>"
+                                                + $"<tr><th colspan='4'>{person}<th></tr>");
+                                        }
+                                        catch (Exception e)
+                                        {
+                                        }
 
-                                            linkHTML[typeof(Course)] += $"<tr><td>{((Course) personLink).ID}</td>"
-                                                                        + $"<td>{((Course) personLink).Name}</td>"
-                                                                        + $"<td>{((Course) personLink).Capacity}</td>"
-                                                                        + $"<td>{Math.Round(((Course) personLink).Credits):F2}</td></tr>";
-                                            break;
-                                        case info.opportunity.Program _:
+                                        linkHTML[typeof(Course)] += $"<tr><td>{((Course) personLink).ID}</td>"
+                                                                    + $"<td>{((Course) personLink).Name}</td>"
+                                                                    + $"<td>{((Course) personLink).Capacity}</td>"
+                                                                    + $"<td>{Math.Round(((Course) personLink).Credits):F2}</td></tr>";
+                                        break;
+                                    case info.opportunity.Program _:
 
-                                            try
-                                            {
-                                                linkHTML.Add(typeof(info.opportunity.Program),
-                                                    "<h2 style='text-align: center;'>Programs</h2>"
-                                                    + "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center; width: 100%;'><tr>"
-                                                    + "<th>ID</th>"
-                                                    + "<th>Name</th>"
-                                                    + "<th>Duration</th>"
-                                                    + "<th>Co-OP</th>"
-                                                    + "<th>Outcome</th></tr>"
-                                                    + $"<tr><th colspan='5'>{person}<th></tr>");
-                                            }
-                                            catch (Exception e)
-                                            {
-                                            }
+                                        try
+                                        {
+                                            linkHTML.Add(typeof(info.opportunity.Program),
+                                                "<h2 style='text-align: center;'>Programs</h2>"
+                                                + "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center; width: 100%;'><tr>"
+                                                + "<th>ID</th>"
+                                                + "<th>Name</th>"
+                                                + "<th>Duration</th>"
+                                                + "<th>Co-OP</th>"
+                                                + "<th>Outcome</th></tr>"
+                                                + $"<tr><th colspan='5'>{person}<th></tr>");
+                                        }
+                                        catch (Exception e)
+                                        {
+                                        }
 
-                                            linkHTML[typeof(info.opportunity.Program)] +=
-                                                $"<tr><td>{((info.opportunity.Program) personLink).ID}</td>"
-                                                + $"<td>{((info.opportunity.Program) personLink).Name}</td>"
-                                                + $"<td>{((info.opportunity.Program) personLink).Duration.Days / 365} Years</td>"
-                                                + $"<td>{((info.opportunity.Program) personLink).IsCOOP}</td>"
-                                                + $"<td>{((info.opportunity.Program) personLink).Outcome.ToString()}</td></tr>";
-                                            break;
-                                    }
+                                        linkHTML[typeof(info.opportunity.Program)] +=
+                                            $"<tr><td>{((info.opportunity.Program) personLink).ID}</td>"
+                                            + $"<td>{((info.opportunity.Program) personLink).Name}</td>"
+                                            + $"<td>{((info.opportunity.Program) personLink).Duration.Days / 365} Years</td>"
+                                            + $"<td>{((info.opportunity.Program) personLink).IsCOOP}</td>"
+                                            + $"<td>{((info.opportunity.Program) personLink).Outcome.ToString()}</td></tr>";
+                                        break;
                                 }
                             }
+                        }
 
-                            pdfHTML += "</table>";
+                        pdfHTML += "</table>";
 
-                            if (linkHTML.Count > 0)
+                        // Writes all links for the giving student if any exist
+                        if (linkHTML.Count > 0)
+                        {
+                            pdfHTML += "<div style='position: absolute; top: 100%; width: 95%;'>";
+
+                            foreach (var liinkMarkup in linkHTML)
                             {
-                                pdfHTML += "<div style='position: absolute; top: 100%; width: 95%;'>";
-
-                                foreach (var liinkMarkup in linkHTML)
-                                {
-                                    pdfHTML += liinkMarkup.Value + "</table>";
-                                }
-
-                                pdfHTML += "</div>";
-                            }
-
-                            pdfHTML += "</div>";
-                            #endregion
-                            break;
-                        case LinkType.Professors:
-
-                            #region Generate Professor Report
-
-                            pdfHTML += "<h2 style='text-align: center;'>Professors</h2><br /><br />"
-                                       + "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center; width: 100%;'><tr>"
-                                       + "<th>ID</th>"
-                                       + "<th>Name</th>"
-                                       + "<th>Birthday</th>"
-                                       + "<th>Gender</th>"
-                                       + "<th>Startdate</th></tr>";
-
-                            foreach (var person in Professor.All)
-                            {
-                                pdfHTML += $"<tr><td>{person.ID}</td>"
-                                           + $"<td>{person.FullName}</td>"
-                                           + $"<td>{person.BirthDate:YYYY-MM-DD}</td>"
-                                           + $"<td>{person.Gender}</td>"
-                                           + $"<td>{person.StartDate:YYYY-MM-DD}</td></tr>";
-
-                                foreach (var personLink in person.Links)
-                                {
-                                    switch (personLink)
-                                    {
-                                        case Course _:
-                                            try
-                                            {
-                                                linkHTML.Add(typeof(Course),
-                                                    "<h2 style='text-align: center;'>Courses</h2>"
-                                                    + "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center; width: 100%;'><tr>"
-                                                    + "<th>ID</th>"
-                                                    + "<th>Name</th>"
-                                                    + "<th>Capacity</th>"
-                                                    + "<th>Credits</th></tr>"
-                                                    + $"<tr><th colspan='4'>{person}<th></tr>");
-                                            }
-                                            catch (Exception e)
-                                            {
-                                            }
-
-                                            linkHTML[typeof(Course)] += $"<tr><td>{((Course) personLink).ID}</td>"
-                                                                        + $"<td>{((Course) personLink).Name}</td>"
-                                                                        + $"<td>{((Course) personLink).Capacity}</td>"
-                                                                        + $"<td>{Math.Round(((Course) personLink).Credits):F2}</td></tr>";
-                                            break;
-                                    }
-                                }
-                            }
-
-                            pdfHTML += "</table>";
-
-                            if (linkHTML.Count > 0)
-                            {
-                                pdfHTML += "<div style='position: absolute; top: 100%; width: 95%;'>";
-
-                                foreach (var liinkMarkup in linkHTML)
-                                {
-                                    pdfHTML += liinkMarkup.Value + "</table>";
-                                }
-
-                                pdfHTML += "</div>";
+                                pdfHTML += liinkMarkup.Value + "</table>";
                             }
 
                             pdfHTML += "</div>";
-                            #endregion
-                            break;
-                    }
+                        }
+
+                        pdfHTML += "</div>";
+
+                        #endregion
+
+                        break;
+                    case LinkType.Professors:
+
+                        #region Generate Professor Report
+
+                        // Geneate the headr used to display the professor
+                        pdfHTML += "<h2 style='text-align: center;'>Professors</h2><br /><br />"
+                                   + "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center; width: 100%;'><tr>"
+                                   + "<th>ID</th>"
+                                   + "<th>Name</th>"
+                                   + "<th>Birthday</th>"
+                                   + "<th>Gender</th>"
+                                   + "<th>Startdate</th></tr>";
+
+                        // Generate the html for the the person
+                        foreach (var person in Professor.All)
+                        {
+                            pdfHTML += $"<tr><td>{person.ID}</td>"
+                                       + $"<td>{person.FullName}</td>"
+                                       + $"<td>{person.BirthDate:YYYY-MM-DD}</td>"
+                                       + $"<td>{person.Gender}</td>"
+                                       + $"<td>{person.StartDate:YYYY-MM-DD}</td></tr>";
+
+                            // Generate html fror each proffesor link
+                            foreach (var personLink in person.Links)
+                            {
+                                switch (personLink)
+                                {
+                                    case Course _:
+                                        try
+                                        {
+                                            linkHTML.Add(typeof(Course),
+                                                "<h2 style='text-align: center;'>Courses</h2>"
+                                                + "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center; width: 100%;'><tr>"
+                                                + "<th>ID</th>"
+                                                + "<th>Name</th>"
+                                                + "<th>Capacity</th>"
+                                                + "<th>Credits</th></tr>"
+                                                + $"<tr><th colspan='4'>{person}<th></tr>");
+                                        }
+                                        catch (Exception e)
+                                        {
+                                        }
+
+                                        linkHTML[typeof(Course)] += $"<tr><td>{((Course) personLink).ID}</td>"
+                                                                    + $"<td>{((Course) personLink).Name}</td>"
+                                                                    + $"<td>{((Course) personLink).Capacity}</td>"
+                                                                    + $"<td>{Math.Round(((Course) personLink).Credits):F2}</td></tr>";
+                                        break;
+                                }
+                            }
+                        }
+
+                        pdfHTML += "</table>";
+
+                        // Write the links to the main report if any links present
+                        if (linkHTML.Count > 0)
+                        {
+                            pdfHTML += "<div style='position: absolute; top: 100%; width: 95%;'>";
+
+                            foreach (var liinkMarkup in linkHTML)
+                            {
+                                pdfHTML += liinkMarkup.Value + "</table>";
+                            }
+
+                            pdfHTML += "</div>";
+                        }
+
+                        pdfHTML += "</div>";
+
+                        #endregion
+
+                        break;
+                }
 
                 _fileChooser.CheckFileExists = false;
                 _fileChooser.Filter = "PDF|*.pdf";
-                
+
                 if (_fileChooser.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
+
                 Clipboard.SetText(pdfHTML);
                 Console.WriteLine(_fileChooser.FileName);
 
+                // Verifys with user of overwritting a file if file exists
                 if (File.Exists(_fileChooser.FileName)
                     && MessageBox.Show("The file is not empty.\n Replace contents?") != DialogResult.OK)
                 {
                     return;
                 }
 
+                // Render the created html as a pdf
                 _pdfConverter.RenderHtmlAsPdf(pdfHTML).SaveAs(_fileChooser.FileName);
             };
 
+            // Display the correct alter menu depending on the entity that was selected
             picLink.Click += (sendeer, args) =>
             {
                 if (_current == null)
@@ -413,157 +484,157 @@ namespace student_manager
                     return;
                 }
 
-                if (Current.Value == LinkType.Students)
+                if (_current.Value == LinkType.Students)
                 {
-                    new StudentLink((Student)edgStudents.Selected).ShowDialog();
+                    new StudentLink((Student) edgStudents.Selected).ShowDialog();
                 }
-                else if (Current.Value == LinkType.Professors)
+                else if (_current.Value == LinkType.Professors)
                 {
-                    new ProfessorLink((Professor)edgStudents.Selected).ShowDialog();
+                    new ProfessorLink((Professor) edgStudents.Selected).ShowDialog();
                 }
-                else if (Current.Value == LinkType.Programs)
+                else if (_current.Value == LinkType.Programs)
                 {
                 }
-                else if (Current.Value == LinkType.Courses)
+                else if (_current.Value == LinkType.Courses)
                 {
                 }
             };
 
             picMinus.Click += (sender, args) =>
             {
-                if (_current == null)
+                switch (_current)
                 {
-                    return;
-                }
-
-                if (Current.Value == LinkType.Students)
-                {
-                    confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Student"), result =>
-                    {
-                        if (!result)
+                    case null:
+                        return;
+                    case LinkType.Students:
+                        // Shows a verification box
+                        confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Student"), result =>
                         {
-                            return;
-                        }
+                            // Romove the entity from view once the Student from view once 
+                            if (!result)
+                            {
+                                return;
+                            }
 
-                        ((Student)edgStudents.Selected).Disconnet();
+                            ((Student) edgStudents.Selected).Disconnet();
 
-                        edgStudents.RemoveEntry(edgStudents.Selected);
-                    });
-                }
-                else if (Current.Value == LinkType.Professors)
-                {
-                    confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Professor"), result =>
-                    {
-                        if (!result)
+                            edgStudents.RemoveEntry(edgStudents.Selected);
+                        });
+                        break;
+                    case LinkType.Professors:
+                        // Shows a verification box
+                        confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Professor"), result =>
                         {
-                            return;
-                        }
-                        
-                        ((Professor)edgProfessors.Selected).Disconnet();
+                            // Romove the entity from view once the Student from view once 
+                            if (!result)
+                            {
+                                return;
+                            }
 
-                        edgProfessors.RemoveEntry(edgProfessors.Selected);
-                    });
-                }
-                else if (Current.Value == LinkType.Programs)
-                {
-                    confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Program"), result =>
-                    {
-                        if (!result)
+                            ((Professor) edgProfessors.Selected).Disconnet();
+
+                            edgProfessors.RemoveEntry(edgProfessors.Selected);
+                        });
+                        break;
+                    case LinkType.Programs:
+                        // Shows a verification box
+                        confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Program"), result =>
                         {
-                            return;
-                        }
+                            // Romove the entity from view once the Student from view once 
+                            if (!result)
+                            {
+                                return;
+                            }
 
-                        ((info.opportunity.Program)edgPrograms.Selected).Disconnet();
+                            ((info.opportunity.Program) edgPrograms.Selected).Disconnet();
 
-                        edgPrograms.RemoveEntry(edgPrograms.Selected);
-                    });
-                }
-                else if (Current.Value == LinkType.Courses)
-                {
-                    confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Course"), result =>
-                    {
-                        if (!result)
+                            edgPrograms.RemoveEntry(edgPrograms.Selected);
+                        });
+                        break;
+                    case LinkType.Courses:
+                        // Shows a verification box
+                        confirm.ShowDialog(string.Format(_deletionTemplate, "delete", "Course"), result =>
                         {
-                            return;
-                        }
-                        
-                        ((Course)edgCourses.Selected).Disconnet();
+                            // Romove the entity from view once the Student from view once 
+                            if (!result)
+                            {
+                                return;
+                            }
 
-                        edgCourses.RemoveEntry(edgCourses.Selected);
-                    });
+                            ((Course) edgCourses.Selected).Disconnet();
+
+                            edgCourses.RemoveEntry(edgCourses.Selected);
+                        });
+                        break;
                 }
             };
 
+            // Allows the user ente a new entity or modify a entity
             picAdd.Click += (sender, args) =>
             {
-                if (_current == null)
+                switch (_current)
                 {
-                    return;
-                }
+                    case null:
+                        return;
+                    case LinkType.Students:
+                        edgStudents.Selected = null;
 
-                if (Current.Value == LinkType.Students)
-                {
-                    edgStudents.Selected = null;
+                        var student = new Student();
 
-                    var student = new Student();
+                        _alterLinkType[_current.Value].Entity = student;
 
-                    _alterLinkType[Current.Value].Entity = student;
+                        if (_alterLinkType[_current.Value].ShowDialog() == DialogResult.OK)
+                        {
+                            edgStudents.AddEntity(student);
+                        }
+                        else
+                        {
+                            student.Disconnet();
+                        }
 
-                    if (_alterLinkType[Current.Value].ShowDialog() == DialogResult.OK)
-                    {
-                        edgStudents.AddEntity(student);
-                    }
-                    else
-                    {
-                        student.Disconnet();
-                    }
-                }
-                else if (Current.Value == LinkType.Professors)
-                {
-                    edgProfessors.Selected = null;
+                        break;
+                    case LinkType.Professors:
+                        edgProfessors.Selected = null;
 
-                    var professor = new Professor();
+                        var professor = new Professor();
 
-                    _alterLinkType[Current.Value].Entity = professor;
+                        _alterLinkType[_current.Value].Entity = professor;
 
-                    if (_alterLinkType[Current.Value].ShowDialog() == DialogResult.OK)
-                    {
-                        edgProfessors.AddEntity(professor);
-                    }
-                    else
-                    {
-                        professor.Disconnet();
-                    }
+                        if (_alterLinkType[_current.Value].ShowDialog() == DialogResult.OK)
+                        {
+                            edgProfessors.AddEntity(professor);
+                        }
+                        else
+                        {
+                            professor.Disconnet();
+                        }
+
+                        break;
                 }
             };
 
+            // Allows the user to alter a already created entity
             picEdit.Click += (sender, args) =>
             {
-                if (_current == null)
+                switch (_current)
                 {
-                    return;
-                }
+                    case null:
+                        return;
+                    case LinkType.Students:
+                        _alterLinkType[Current.Value].Entity = edgStudents.Selected;
 
-                if (Current.Value == LinkType.Students)
-                {
-                    _alterLinkType[Current.Value].Entity = edgStudents.Selected;
+                        if (_alterLinkType[Current.Value].ShowDialog() == DialogResult.OK)
+                        {
+                            edgStudents.UpdateEntity(edgStudents.Selected);
+                        }
 
-                    if (_alterLinkType[Current.Value].ShowDialog() == DialogResult.OK)
-                    {
-                        edgStudents.UpdateEntity(edgStudents.Selected);
-                    }
-                }
-                else if (_current != null && Current.Value == LinkType.Professors)
-                {
-                    _alterLinkType[Current.Value].Entity = edgProfessors.Selected;
-
-                    if (_alterLinkType[Current.Value].ShowDialog() == DialogResult.OK)
-                    {
-                        edgProfessors.UpdateEntity(edgProfessors.Selected);
-                    }
+                        break;
                 }
             };
+
             #endregion
+
+            // Add evnt binding for each indivuall page
 
             #region EventBinding_Pages
 
@@ -571,6 +642,7 @@ namespace student_manager
 
             edgPrograms.SelectionChanged += (sender, args) =>
             {
+                // Icon the user is currently on the programs page
                 if (!_current.HasValue || _current.Value != LinkType.Programs)
                 {
                 }
@@ -586,6 +658,7 @@ namespace student_manager
 
             edgPrograms.MaxChanged += (sender, args) =>
             {
+                // Updates the page indicator as entitys are added
                 if (!_current.HasValue || _current.Value != LinkType.Programs)
                 {
                     return;
@@ -597,6 +670,7 @@ namespace student_manager
 
             edgPrograms.PageChanged += (sender, args) =>
             {
+                // Updates the page indicator
                 if (Current != LinkType.Programs)
                 {
                     return;
@@ -611,6 +685,7 @@ namespace student_manager
 
             edgCourses.SelectionChanged += (sender, args) =>
             {
+                // Allows the user to alter the selection if the user is on the Course page
                 if (!_current.HasValue || _current.Value != LinkType.Courses)
                 {
                     return;
@@ -627,6 +702,7 @@ namespace student_manager
 
             edgCourses.MaxChanged += (sender, args) =>
             {
+                // Updates the page indicator if the user is currently on the course page
                 if (!_current.HasValue || _current.Value != LinkType.Courses)
                 {
                     return;
@@ -638,6 +714,7 @@ namespace student_manager
 
             edgCourses.PageChanged += (sender, args) =>
             {
+                // Binds the indicator selected page to the page of the display group
                 if (Current != LinkType.Courses)
                 {
                     return;
@@ -652,6 +729,7 @@ namespace student_manager
 
             edgStudents.SelectionChanged += (sender, args) =>
             {
+                // Allows the user to modify the current selection if the user is on the Student page
                 if (!_current.HasValue || _current.Value != LinkType.Students)
                 {
                     return;
@@ -668,6 +746,7 @@ namespace student_manager
 
             edgStudents.MaxChanged += (sender, args) =>
             {
+                // Updates the maximum page as students are added
                 if (!_current.HasValue || _current.Value != LinkType.Students)
                 {
                     return;
@@ -679,6 +758,7 @@ namespace student_manager
 
             edgStudents.PageChanged += (sender, args) =>
             {
+                // Binds the indicator page to the current page of the Student display
                 if (Current != LinkType.Students)
                 {
                     return;
@@ -693,6 +773,7 @@ namespace student_manager
 
             edgProfessors.SelectionChanged += (sender, args) =>
             {
+                // Shows the correct buttons to be able to alter a Professor
                 if (!_current.HasValue || _current.Value != LinkType.Professors)
                 {
                     return;
@@ -709,6 +790,7 @@ namespace student_manager
 
             edgProfessors.MaxChanged += (sender, args) =>
             {
+                // Shows the correct page count when a Professor is added or removed
                 if (!_current.HasValue || _current.Value != LinkType.Professors)
                 {
                     return;
@@ -720,6 +802,7 @@ namespace student_manager
 
             edgProfessors.PageChanged += (sender, args) =>
             {
+                // Binds the indicated page to the Page of the Proffesor display
                 if (Current != LinkType.Professors)
                 {
                     return;
@@ -760,54 +843,46 @@ namespace student_manager
                 }
             };
 
+            // Handles search and filter the currently displayed list
             sbEntites.Searched += (sender, e) =>
             {
-
-                if (_current == null)
+                switch (_current)
                 {
-                    return;
-                }
-
-                if (Current.Value == LinkType.Students)
-                {
-                    if (string.IsNullOrWhiteSpace(sbEntites.Text))
-                    {
+                    case null:
+                        return;
+                    case LinkType.Students when string.IsNullOrWhiteSpace(sbEntites.Text):
                         edgStudents.ClearSearch();
                         return;
-                    }
-                    edgStudents.DrawFiltered("FullName", sbEntites.Text);
-                }
-                else if (Current.Value == LinkType.Professors)
-                {
-                    if (string.IsNullOrWhiteSpace(sbEntites.Text))
-                    {
+                    case LinkType.Students:
+                        edgStudents.DrawFiltered("FullName", sbEntites.Text);
+                        break;
+                    case LinkType.Professors when string.IsNullOrWhiteSpace(sbEntites.Text):
                         edgProfessors.ClearSearch();
                         return;
-                    }
-                    edgProfessors.DrawFiltered("FullName", sbEntites.Text);
-                }
-                else if (Current.Value == LinkType.Programs)
-                {
-                    if (string.IsNullOrWhiteSpace(sbEntites.Text))
-                    {
+                    case LinkType.Professors:
+                        edgProfessors.DrawFiltered("FullName", sbEntites.Text);
+                        break;
+                    case LinkType.Programs when string.IsNullOrWhiteSpace(sbEntites.Text):
                         edgPrograms.ClearSearch();
                         return;
-                    }
-                    edgPrograms.Page = iPage.Selected;
-                }
-                else if (Current.Value == LinkType.Courses)
-                {
-                    if (string.IsNullOrWhiteSpace(sbEntites.Text))
-                    {
+                    case LinkType.Programs:
+                        edgPrograms.Page = iPage.Selected;
+                        break;
+                    case LinkType.Courses when string.IsNullOrWhiteSpace(sbEntites.Text):
                         edgCourses.ClearSearch();
                         return;
-                    }
-                    edgCourses.Page = iPage.Selected;
+                    case LinkType.Courses:
+                        edgCourses.Page = iPage.Selected;
+                        break;
                 }
+
                 Console.WriteLine($"[{DateTime.Now}] Search requested {sbEntites.Text}");
             };
 
+            // Data used to test the functionality of the application
+
             #region Testing_Data
+
             edgProfessors.AddEntity(new Professor("PROF0", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
             /*edgProfessors.AddEntity(new Professor("PROF10", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
             edgProfessors.AddEntity(new Professor("PROF11", "Alex", "A", DateTime.Now, Gender.Male, DateTime.Now));
@@ -836,13 +911,15 @@ namespace student_manager
             edgStudents.AddEntity(new Student("STU4", "Kevin", "A", DateTime.Now, Gender.Male, DateTime.Now));
             edgStudents.AddEntity(new Student("STU5", "Jane", "A", DateTime.Now, Gender.Male, DateTime.Now));*/
 
-            var program = new info.opportunity.Program("PROG0", "Test Course", TimeSpan.FromDays(730), false, Outcomes.Diploma);
+            var program = new info.opportunity.Program("PROG0", "Test Course", TimeSpan.FromDays(730), false,
+                Outcomes.Diploma);
 
             var course = new info.opportunity.Course("CRO0", "Test Course", 100, 4);
             program.AddLink(course);
 
             edgPrograms.AddEntity(program);
-            edgPrograms.AddEntity(new info.opportunity.Program("PROG1", "Test Course", TimeSpan.FromDays(730), false, Outcomes.Diploma));
+            edgPrograms.AddEntity(new info.opportunity.Program("PROG1", "Test Course", TimeSpan.FromDays(730), false,
+                Outcomes.Diploma));
             /*edgPrograms.AddEntity(new info.opportunity.Program("PROG1"));
             edgPrograms.AddEntity(new info.opportunity.Program("PROG2"));
             edgPrograms.AddEntity(new info.opportunity.Program("PROG3"));
@@ -853,6 +930,7 @@ namespace student_manager
             edgPrograms.AddEntity(new info.opportunity.Program("PROG2"));
             edgPrograms.AddEntity(new info.opportunity.Program("PROG3"));
             edgPrograms.AddEntity(new info.opportunity.Program("PROG4"));*/
+
             #endregion
 
             _masterTip.SetToolTip(picReport, "Export Report");

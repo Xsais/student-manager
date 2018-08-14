@@ -1,4 +1,17 @@
-﻿using System;
+﻿/**
+ * File: Course.cs
+ * Assignment: Final_Project
+ * Creation date: August 6, 2018
+ * Last Modified: August 14, 2018
+ * Description: Handles the cretion and handling of an course data
+ *
+ * Group Members:
+ *    - Emily Ramanna
+ *    - James Grau
+ *    - Nathaniel Primo
+**/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,13 +22,12 @@ namespace student_manager.info.opportunity
 {
     public class Course : Entity
     {
-
         private static readonly List<Course> _population = new List<Course>();
 
         public static IEnumerable<Course> All => _population;
 
         public static int Count => _population.Count;
-        
+
         public string Name { get; set; }
 
         public int Capacity { get; set; } = 100;
@@ -27,7 +39,7 @@ namespace student_manager.info.opportunity
             Name = name;
             Capacity = capacity;
             Credits = credits;
-            
+
             Reconnect();
         }
 
@@ -36,11 +48,17 @@ namespace student_manager.info.opportunity
             Reconnect();
         }
 
+        /// <summary>
+        /// Removes the entity from the global allage
+        /// </summary>
         public void Disconnet()
         {
             _population.Remove(this);
         }
 
+        /// <summary>
+        /// Adds an entity to the global allage
+        /// </summary>
         public void Reconnect()
         {
             _population.Add(this);

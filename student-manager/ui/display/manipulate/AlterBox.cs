@@ -1,4 +1,17 @@
-﻿using student_manager.info;
+﻿/**
+ * File: AlterBox.cs
+ * Assignment: Final_Project
+ * Creation date: August 6, 2018
+ * Last Modified: August 14, 2018
+ * Description: Handles altering a specific entity
+ *
+ * Group Members:
+ *    - Emily Ramanna
+ *    - James Grau
+ *    - Nathaniel Primo
+**/
+
+using student_manager.info;
 using student_manager.info.entity;
 using student_manager.info.opportunity;
 using System;
@@ -19,6 +32,10 @@ namespace student_manager.ui.display.manipulate
 
         public Action Confirming;
 
+        /// <summary>
+        /// Allows for the approval of changes to be made
+        /// </summary>
+        /// <param name="confirmed">is the changes approved</param>
         public abstract void Confirm(bool confirmed = true);
 
         protected bool _isClean = true;
@@ -27,49 +44,55 @@ namespace student_manager.ui.display.manipulate
 
         public virtual Entity Entity
         {
-
             get => _entity;
             set
             {
                 if (value == null || value == _entity)
                 {
-
                     return;
                 }
 
-                    switch (value)
-                    {
-                        case Student _:
-                            
-                            lblTitle.Text = value.IsEmpty() ? "New Student" : "Edit Student";
+                switch (value)
+                {
+                    case Student _:
 
-                            break;
-                        case Professor _:
-
-                            lblTitle.Text = value.IsEmpty() ? "New Professor" : "Edit Professor";
-
-                            break;
-                        case Course _:
-
-                            lblTitle.Text = value.IsEmpty() ? "New Course" : "Edit Course";
+                        lblTitle.Text = value.IsEmpty() ? "New Student" : "Edit Student";
 
                         break;
-                        case info.opportunity.Program _:
+                    case Professor _:
 
-                            lblTitle.Text = value.IsEmpty() ? "New Program" : "Edit Program";
+                        lblTitle.Text = value.IsEmpty() ? "New Professor" : "Edit Professor";
+
+                        break;
+                    case Course _:
+
+                        lblTitle.Text = value.IsEmpty() ? "New Course" : "Edit Course";
+
+                        break;
+                    case info.opportunity.Program _:
+
+                        lblTitle.Text = value.IsEmpty() ? "New Program" : "Edit Program";
 
                         break;
                 }
 
                 _entity = value;
-                }
+            }
         }
 
-        public AlterBox()
+        /// <summary>
+        /// Init the box and needed controls
+        /// </summary>
+        protected AlterBox()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Allows the event to be raired when the user cancels the request
+        /// </summary>
+        /// <param name="sender">The sending object</param>
+        /// <param name="e">The sending arguments</param>
         private void CancelRequested(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;

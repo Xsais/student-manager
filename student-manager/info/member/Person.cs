@@ -1,17 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿/**
+ * File: Person.cs
+ * Assignment: Final_Project
+ * Creation date: August 6, 2018
+ * Last Modified: August 14, 2018
+ * Description: Handles the managment of professors and students
+ *
+ * Group Members:
+ *    - Emily Ramanna
+ *    - James Grau
+ *    - Nathaniel Primo
+**/
+
+using System;
 using student_manager.info.entity;
 
-namespace student_manager.info
+namespace student_manager.info.member
 {
     public abstract class Person : Entity
     {
-
         public Name FullName { get; } = new Name("", "");
+
         public string FirstName
         {
             get => FullName.FirstName;
@@ -30,7 +38,8 @@ namespace student_manager.info
 
         public DateTime StartDate { get; set; } = DateTime.Now;
 
-        public Person(string id, string first, string last, DateTime birthDate, Gender gender, DateTime startDate) : base(id)
+        public Person(string id, string first, string last, DateTime birthDate, Gender gender,
+            DateTime startDate) : base(id)
         {
             FirstName = first;
             LastName = last;

@@ -1,4 +1,17 @@
-﻿using System;
+﻿/**
+ * File: ErrorTextBox.cs
+ * Assignment: Final_Project
+ * Creation date: August 6, 2018
+ * Last Modified: August 14, 2018
+ * Description: Handles a material text box
+ *
+ * Group Members:
+ *    - Emily Ramanna
+ *    - James Grau
+ *    - Nathaniel Primo
+**/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -25,15 +38,11 @@ namespace student_manager.ui.functionality
 
         public string ErrorText
         {
-            get
-            {
-                return _errorText;
-            }
+            get => _errorText;
             set
             {
                 if (Status == Status.Error)
                 {
-
                     lblPlace.Text = value;
                 }
 
@@ -77,7 +86,6 @@ namespace student_manager.ui.functionality
             get => _placeText;
             set
             {
-
                 if (Status == Status.Normal)
                 {
                     lblPlace.Text = value;
@@ -92,8 +100,8 @@ namespace student_manager.ui.functionality
         public Color PlaceColor
         {
             get => _placeColor;
-            set {
-
+            set
+            {
                 if (Status == Status.Normal)
                 {
                     lblPlace.ForeColor = value;
@@ -142,6 +150,11 @@ namespace student_manager.ui.functionality
             Status = Status.Normal;
         }
 
+        /// <summary>
+        /// Occurs when the user is currently typing
+        /// </summary>
+        /// <param name="sender">The sending object</param>
+        /// <param name="e">The sending arguments</param>
         private void InProgress(object sender, EventArgs e)
         {
             lblPlace.Visible = string.IsNullOrEmpty(txtText.Text);
@@ -149,6 +162,11 @@ namespace student_manager.ui.functionality
             TextChanged?.Invoke(sender, e);
         }
 
+        /// <summary>
+        /// Allows the addition of addition text
+        /// </summary>
+        /// <param name="sender">The sending object</param>
+        /// <param name="e">The sending arguments</param>
         private void StartProgress(object sender, EventArgs e)
         {
             txtText.Focus();

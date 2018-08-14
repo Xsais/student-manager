@@ -1,4 +1,17 @@
-﻿using System;
+﻿/**
+ * File: ClickableDisplay.cx
+ * Assignment: Final_Project
+ * Creation date: August 6, 2018
+ * Last Modified: August 14, 2018
+ * Description: Handles displaying a material button
+ *
+ * Group Members:
+ *    - Emily Ramanna
+ *    - James Grau
+ *    - Nathaniel Primo
+**/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -18,21 +31,28 @@ namespace student_manager.ui.display
 
         public Color UnderlineColor { get; set; } = Color.Black;
 
-        public int UnderlineHight { get => lblUderLine.Height; set => lblUderLine.Height = value; }
+        public int UnderlineHight
+        {
+            get => lblUderLine.Height;
+            set => lblUderLine.Height = value;
+        }
 
-        public Cursor Cursor { get => lblTitle.Cursor; set => lblTitle.Cursor = value; }
+        public Cursor Cursor
+        {
+            get => lblTitle.Cursor;
+            set => lblTitle.Cursor = value;
+        }
 
         public Color SelectionColor { get; set; } = SystemColors.Highlight;
 
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set
             {
                 _isSelected = value;
                 if (UnderlineColor.Equals(SelectionColor))
                 {
-
                     return;
                 }
 
@@ -46,7 +66,11 @@ namespace student_manager.ui.display
             }
         }
 
-        public ContentAlignment TextAlign { get => lblTitle.TextAlign; set => lblTitle.TextAlign = value; }
+        public ContentAlignment TextAlign
+        {
+            get => lblTitle.TextAlign;
+            set => lblTitle.TextAlign = value;
+        }
 
         public override Font Font
         {
@@ -60,11 +84,19 @@ namespace student_manager.ui.display
             set => lblTitle.Text = value;
         }
 
+        /// <summary>
+        /// Init and displays the required controls
+        /// </summary>
         public ClickableDisplay()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Highlights a specific clickable display
+        /// </summary>
+        /// <param name="sender">The sending class</param>
+        /// <param name="e">The sending arguments</param>
         private void HiglightClickable(object sender, EventArgs e)
         {
             if (IsSelected || HighlightColor.Equals(UnderlineColor))
@@ -75,6 +107,11 @@ namespace student_manager.ui.display
             lblUderLine.BackColor = HighlightColor;
         }
 
+        /// <summary>
+        /// de selects a specific clickable display
+        /// </summary>
+        /// <param name="sender">The sending class</param>
+        /// <param name="e">The sending arguments</param>
         private void DeHighlightClickable(object sender, EventArgs e)
         {
             if (IsSelected || HighlightColor.Equals(UnderlineColor))
@@ -85,6 +122,11 @@ namespace student_manager.ui.display
             lblUderLine.BackColor = UnderlineColor;
         }
 
+        /// <summary>
+        /// Detects when the user clicks
+        /// </summary>
+        /// <param name="sender">The sending class</param>
+        /// <param name="e">The sending arguments</param>
         private void TitleClicked(object sender, EventArgs e)
         {
             InvokeOnClick(this, e);

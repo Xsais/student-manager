@@ -1,4 +1,17 @@
-﻿using System;
+﻿/**
+ * File: StudentLink.cs
+ * Assignment: Final_Project
+ * Creation date: August 6, 2018
+ * Last Modified: August 14, 2018
+ * Description: Handles the links made by a Course
+ *
+ * Group Members:
+ *    - Emily Ramanna
+ *    - James Grau
+ *    - Nathaniel Primo
+**/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,7 +37,7 @@ namespace student_manager.ui.functionality.links
         }
 
         private readonly ToolTip _masterTip = new ToolTip();
-        
+
         private readonly Dictionary<LinkType, Tuple<ClickableDisplay, Control>> _avilableLinkTypees =
             new Dictionary<LinkType, Tuple<ClickableDisplay, Control>>();
 
@@ -39,8 +52,8 @@ namespace student_manager.ui.functionality.links
                 {
                     return;
                 }
-                
-                
+
+
                 if (_current.HasValue)
                 {
                     try
@@ -72,7 +85,6 @@ namespace student_manager.ui.functionality.links
 
                         if (selectedGroup != null)
                         {
-
                             selected.Item2.Visible = true;
 
                             iPage.Count = selectedGroup.MaxPages;
@@ -84,11 +96,11 @@ namespace student_manager.ui.functionality.links
                             switch (value.Value)
                             {
                                 case LinkType.Programs:
-                                    
+
                                     _masterTip.SetToolTip(picAdd, "Link Program");
                                     break;
                                 case LinkType.Courses:
-                                    
+
                                     _masterTip.SetToolTip(picAdd, "Link Course");
                                     break;
                             }
@@ -106,18 +118,23 @@ namespace student_manager.ui.functionality.links
             }
         }
 
+        /// <summary>
+        /// Handles creaating and removing links
+        /// </summary>
+        /// <param name="student">The student in wich to modify the links</param>
         public StudentLink(Student student)
         {
             InitializeComponent();
-            
-            _avilableLinkTypees.Add(LinkType.Programs, Tuple.Create<ClickableDisplay, Control>(cdPrograms, edgPrograms));
+
+            _avilableLinkTypees.Add(LinkType.Programs,
+                Tuple.Create<ClickableDisplay, Control>(cdPrograms, edgPrograms));
             _avilableLinkTypees.Add(LinkType.Courses, Tuple.Create<ClickableDisplay, Control>(cdCourses, edgCourses));
-            
+
             cdPrograms.Click += (sender, e) => Current = LinkType.Programs;
             cdCourses.Click += (sender, e) => Current = LinkType.Courses;
 
-            picMinus.Click += (sender, e) => {
-                
+            picMinus.Click += (sender, e) =>
+            {
                 if (_current == null)
                 {
                     return;
@@ -125,15 +142,13 @@ namespace student_manager.ui.functionality.links
 
                 if (Current.Value == LinkType.Courses)
                 {
-
                     _student.RemoveLink(edgCourses.Selected);
                     edgCourses.UpdateEntity(edgCourses.Selected);
-                    
+
                     edgPrograms.Selected = null;
                 }
                 else if (Current.Value == LinkType.Programs)
                 {
-
                     _student.RemoveLink(edgPrograms.Selected);
                     edgPrograms.UpdateEntity(edgPrograms.Selected);
 
@@ -153,10 +168,9 @@ namespace student_manager.ui.functionality.links
 
                 if (Current.Value == LinkType.Courses)
                 {
-                    
                     _student.AddLink(edgCourses.Selected);
                     edgCourses.UpdateEntity(edgCourses.Selected, true);
-                    
+
                     edgCourses.Selected = null;
 
                     picAdd.Visible = false;
@@ -164,10 +178,9 @@ namespace student_manager.ui.functionality.links
                 }
                 else if (Current.Value == LinkType.Programs)
                 {
-
                     _student.AddLink(edgPrograms.Selected);
                     edgPrograms.UpdateEntity(edgPrograms.Selected, true);
-                    
+
                     edgCourses.AddAll(edgPrograms.Selected.PullLinks(LinkType.Courses));
 
                     if (edgPrograms.Selected != null)
@@ -176,19 +189,20 @@ namespace student_manager.ui.functionality.links
 
                         picAdd.Visible = !isLinked;
                         picMinus.Visible = isLinked;
-                    } else
+                    }
+                    else
                     {
-
                         picAdd.Visible = false;
                         picMinus.Visible = false;
                     }
-                    
+
                     edgPrograms.Selected = null;
                     cdCourses.Visible = true;
                 }
             };
 
             #region EventBinding_Pages
+
             #region Programs
 
             edgPrograms.SelectionChanged += (sender, args) =>
@@ -204,9 +218,9 @@ namespace student_manager.ui.functionality.links
 
                     picAdd.Visible = !isVisible;
                     picMinus.Visible = isVisible;
-                } else
+                }
+                else
                 {
-
                     picAdd.Visible = false;
                     picMinus.Visible = false;
                 }
@@ -276,10 +290,11 @@ namespace student_manager.ui.functionality.links
             };
 
             #endregion
+
             #endregion
 
             Current = LinkType.Programs;
-            
+
             iPage.SelectionChanged += (sender, args) =>
             {
                 Console.WriteLine($"[{DateTime.Now}] Page change requested to page {iPage.Selected}");
@@ -299,10 +314,9 @@ namespace student_manager.ui.functionality.links
                     edgCourses.Page = iPage.Selected;
                 }
             };
-            
+
             sbEntites.Searched += (sender, e) =>
             {
-
                 if (_current == null)
                 {
                     return;
@@ -315,6 +329,7 @@ namespace student_manager.ui.functionality.links
                         edgPrograms.ClearSearch();
                         return;
                     }
+
                     edgPrograms.Page = iPage.Selected;
                 }
                 else if (Current.Value == LinkType.Courses)
@@ -324,19 +339,21 @@ namespace student_manager.ui.functionality.links
                         edgCourses.ClearSearch();
                         return;
                     }
+
                     edgCourses.Page = iPage.Selected;
                 }
+
                 Console.WriteLine($"[{DateTime.Now}] Search requested {sbEntites.Text}");
             };
 
             Student = student;
-            
+
             edgPrograms.AddAll(info.opportunity.Program.All);
 
             var courses = student.PullLinks(LinkType.Courses);
 
             cdCourses.Visible = courses != null;
-            
+
             edgCourses.AddAll(courses);
         }
     }
